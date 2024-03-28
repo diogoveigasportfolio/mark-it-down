@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 function Settings() {
   return (
     <>
-      <div className="text-xl text-black">Settings</div>
+      <div>Settings</div>
       <Link to="/aa">Go to Home</Link>
     </>
   )

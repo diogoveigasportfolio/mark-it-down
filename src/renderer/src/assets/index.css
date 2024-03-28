@@ -13,10 +13,8 @@
 
     @apply select-none;
 
-    @apply bg-transparent;
+    @apply font-mono antialiased;
 
-    @apply font-mono antialiased text-white;
-
-    @apply overflow-hidden;
+    /* @apply overflow-hidden; */
   }
 }
