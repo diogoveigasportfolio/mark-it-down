@@ -1,9 +1,22 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Home from './pages/Home'
+import Settings from './pages/Settings'
+import ErrorPage from './error-page'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: '/settings',
+    element: <Settings />
+  }
+])
+
 function App() {
-  return (
-    <div className="h-full flex justify-center items-center bg-neutral-800">
-      <h1 className="text-blue-500 font-bold text-7xl">Mark it down!</h1>
-    </div>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
