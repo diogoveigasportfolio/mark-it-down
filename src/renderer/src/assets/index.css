@@ -13,7 +13,9 @@
 
     @apply select-none;
 
-    @apply font-mono antialiased;
+    @apply antialiased;
+
+    font-family: 'roboto';
 
     /* @apply overflow-hidden; */
   }
