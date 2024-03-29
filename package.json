@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "^2.0.0",
     "@mdxeditor/editor": "^1.14.3",
     "fs-extra": "^11.2.0",
+    "nanoid": "^5.0.6",
     "react-router-dom": "^6.22.3",
     "react-split": "^2.0.14"
   },

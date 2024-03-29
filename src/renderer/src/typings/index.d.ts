@@ -1,5 +1,7 @@
-export type pathItem = {
+export type PathItem = {
+  id: string
   name: string
   content: string | undefined
-  children: pathItem[]
+  isFavorite: boolean
+  children: PathItem[] | undefined
 }
