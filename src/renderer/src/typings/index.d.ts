@@ -1,12 +1,19 @@
-export type PathItem = {
+export type FileType = {
   id: string
   name: string
-  content: string | undefined
+  content: string
   isFavorite: boolean
-  children: PathItem[] | undefined
 }
 
-export type SideBarSizes = {
+export type FolderType = {
+  id: string
+  name: string
+  children: FileType[]
+}
+
+export type ExplorerItemType = FolderType | FileType
+
+export type SideBarSizesType = {
   sizes: number[]
   gutterSize: number
 }

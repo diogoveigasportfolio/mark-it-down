@@ -1,8 +1,8 @@
-import { SideBarSizes } from '@renderer/typings'
+import { SideBarSizesType } from '@renderer/typings'
 import useLocalStorage from './useLocalStorage'
 
 export default function useSideBarSizes() {
-  const { value: sideBarSizes, setValue: setSideBarSizes } = useLocalStorage<SideBarSizes>(
+  const { value: sideBarSizes, setValue: setSideBarSizes } = useLocalStorage<SideBarSizesType>(
     'sideBarSizes',
     {
       sizes: [20, 80],

@@ -1,15 +1,15 @@
-import { PathItem as PathItemType } from '@renderer/typings'
-import PathItem from '@renderer/components/PathItem'
+import { ExplorerItemType } from '@renderer/typings'
+import ExplorerItem from '@renderer/components/ExplorerItem'
 
-type FolderProps = {
-  items: PathItemType[]
+type FoldersProps = {
+  items: ExplorerItemType[]
 }
 
-export default function Folders({ items }: FolderProps) {
+export default function Folders({ items }: FoldersProps) {
   return (
     <section className="space-y-2">
       {items.map((item) => (
-        <PathItem key={item.id} item={item} />
+        <ExplorerItem key={item.id} item={item} />
       ))}
     </section>
   )

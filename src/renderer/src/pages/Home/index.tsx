@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import '../../assets/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
-import { pathItemsData } from '@renderer/data/pathItemsData'
+import { explorerData } from '@renderer/data/explorerData'
 
 import SideBarHeader from './SideBarHeader'
 import Folders from './Folders'
@@ -13,7 +13,7 @@ import Settings from './Settings'
 
 function Home() {
   const { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
-  const [items, setItems] = useState(pathItemsData)
+  const [items, setItems] = useState(explorerData)
 
   return (
     <div className="relative h-full">
