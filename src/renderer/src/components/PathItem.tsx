@@ -27,7 +27,7 @@ function PathItem({ item }: PathItemProps) {
     <>
       {/* Path Item */}
       <button
-        className={`flex items-center gap-3 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-12')}`}
+        className={`flex items-center gap-3 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-9')}`}
         onClick={toggleOpen}
       >
         {isFolder && (
@@ -41,7 +41,7 @@ function PathItem({ item }: PathItemProps) {
       {/* [Children] */}
       <section>
         {isOpen && item.children && (
-          <div className="pl-4 flex flex-col gap-0.5">
+          <div className="pl-4 space-y-2">
             {item.children.map((child) => (
               <PathItem key={child.id} item={child} />
             ))}

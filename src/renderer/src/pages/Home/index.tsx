@@ -12,7 +12,7 @@ import Folders from './Folders'
 import Settings from './Settings'
 
 function Home() {
-  const { sideBarSizes, setSideBarSizes, toggleSideBar } = useSideBarSizes()
+  const { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
   const [items, setItems] = useState(pathItemsData)
 
   return (
@@ -30,7 +30,7 @@ function Home() {
         gutterSize={sideBarSizes.gutterSize}
         gutterAlign="center"
         className="flex h-full bg-neutral-250 dark:bg-neutral-900"
-        onDragEnd={(sizes) => setSideBarSizes((prev) => ({ ...prev, sizes }))}
+        onDragEnd={onDragEnd}
       >
         {/* Side bar */}
         <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">

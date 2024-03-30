@@ -5,3 +5,8 @@ export type PathItem = {
   isFavorite: boolean
   children: PathItem[] | undefined
 }
+
+export type SideBarSizes = {
+  sizes: number[]
+  gutterSize: number
+}

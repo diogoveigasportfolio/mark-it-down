@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { SideBarSizes } from '@renderer/typings'
+import useLocalStorage from './useLocalStorage'
 
-export default function useSideBarSizes(){
-  const [sideBarSizes, setSideBarSizes] = useState({
-    sizes: [20, 80],
-    gutterSize: 10
-  })
+export default function useSideBarSizes() {
+  const { value: sideBarSizes, setValue: setSideBarSizes } = useLocalStorage<SideBarSizes>(
+    'sideBarSizes',
+    {
+      sizes: [20, 80],
+      gutterSize: 10
+    }
+  )
 
   function toggleSideBar() {
     if (sideBarSizes.sizes[0] <= 5)
@@ -19,5 +23,9 @@ export default function useSideBarSizes(){
       })
   }
 
-  return {sideBarSizes, setSideBarSizes, toggleSideBar}
+  function onDragEnd(sizes: number[]) {
+    setSideBarSizes((prev) => ({ ...prev, sizes }))
+  }
+
+  return { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd }
 }
