@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 import '../../assets/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
+import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 
 import SideBarHeader from './SideBarHeader'
@@ -12,8 +13,8 @@ import Folders from './Folders'
 import Settings from './Settings'
 
 function Home() {
-  const { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
-  const [items, setItems] = useState(explorerData)
+  const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
+  const [items, setItems] = useState([...baseExplorerData, ...explorerData])
 
   function handleToggleFolder(id: string) {
     setItems((prevItems) => {

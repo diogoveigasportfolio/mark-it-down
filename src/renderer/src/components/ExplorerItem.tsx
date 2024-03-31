@@ -1,8 +1,8 @@
-import { HiOutlineChevronRight } from 'react-icons/hi2'
-import { useState } from 'react'
+import { HiOutlineChevronRight, HiStar } from 'react-icons/hi2'
 
-import { ExplorerItemType, FolderType } from '@renderer/typings'
+import { ExplorerItemType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
+import { FAVORITE_FOLDER } from '@renderer/constants'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -24,7 +24,14 @@ function ExplorerItem({ item, handleToggleFolder }: ExplorerItemProps) {
             className={`size-6 transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
           />
         )}
-        <span className="text-lg text-nowrap">{item.name}</span>
+        <span className="text-lg text-nowrap flex item-center gap-2">
+          {
+            item.id === FAVORITE_FOLDER && (
+              <HiStar className='size-6'/>
+            )
+          }
+          {item.name}
+        </span>
       </button>
 
       {/* [Children] */}
