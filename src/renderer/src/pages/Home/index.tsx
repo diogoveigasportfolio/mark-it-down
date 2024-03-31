@@ -59,6 +59,7 @@ function Home() {
           <SideBarHeader setCreationInput={setCreationInput} />
           <Folders
             items={items}
+            setItems={setItems}
             handleToggleFolder={handleToggleFolder}
             menuOpen={menuOpen}
             setMenuOpen={setMenuOpen}
