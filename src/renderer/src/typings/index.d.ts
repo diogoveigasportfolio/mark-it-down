@@ -21,3 +21,8 @@ export type SideBarSizesType = {
   sizes: number[]
   gutterSize: number
 }
+
+export type CreationInputType = {
+  file: { isOpen: boolean; value: string }
+  folder: { isOpen: boolean; value: string }
+}

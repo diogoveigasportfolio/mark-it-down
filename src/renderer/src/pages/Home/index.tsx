@@ -7,6 +7,7 @@ import '../../assets/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
+import { CreationInputType } from '@renderer/typings'
 
 import SideBarHeader from './SideBarHeader'
 import Folders from './Folders'
@@ -14,7 +15,13 @@ import Settings from './Settings'
 
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
-  const [items, setItems] = useState([...baseExplorerData, ...explorerData])
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [creationInput, setCreationInput] = useState<CreationInputType>({
+    file: { isOpen: false, value: '' },
+    folder: { isOpen: false, value: '' }
+  })
+  // const [items, setItems] = useState([...baseExplorerData, ...explorerData])
+  const [items, setItems] = useState([...baseExplorerData])
 
   function handleToggleFolder(id: string) {
     setItems((prevItems) => {
@@ -31,7 +38,7 @@ function Home() {
   }
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full" onClick={() => setMenuOpen(false)}>
       <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
         <HiBars3 className="size-12 text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-800 group-hover:dark:text-neutral-300" />
       </button>
@@ -49,8 +56,15 @@ function Home() {
       >
         {/* Side bar */}
         <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
-          <SideBarHeader />
-          <Folders items={items} handleToggleFolder={handleToggleFolder} />
+          <SideBarHeader setCreationInput={setCreationInput} />
+          <Folders
+            items={items}
+            handleToggleFolder={handleToggleFolder}
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+            creationInput={creationInput}
+            setCreationInput={setCreationInput}
+          />
           <Settings />
         </div>
         {/* Main content */}
