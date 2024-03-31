@@ -15,6 +15,20 @@ function Home() {
   const { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
   const [items, setItems] = useState(explorerData)
 
+  function handleToggleFolder(id: string) {
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        if ('children' in item && item.id === id) {
+          return {
+            ...item,
+            isOpen: !item.isOpen
+          }
+        }
+        return item
+      })
+    })
+  }
+
   return (
     <div className="relative h-full">
       <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
@@ -35,7 +49,7 @@ function Home() {
         {/* Side bar */}
         <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
           <SideBarHeader />
-          <Folders items={items} />
+          <Folders items={items} handleToggleFolder={handleToggleFolder} />
           <Settings />
         </div>
         {/* Main content */}

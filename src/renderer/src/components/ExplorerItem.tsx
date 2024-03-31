@@ -1,16 +1,15 @@
 import { HiOutlineChevronRight } from 'react-icons/hi2'
 import { useState } from 'react'
 
-import { ExplorerItemType } from '@renderer/typings'
+import { ExplorerItemType, FolderType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
+  handleToggleFolder?: (id: string) => void
 }
 
-function ExplorerItem({ item }: ExplorerItemProps) {
-  const [isOpen, setIsOpen] = useState(false)
-
+function ExplorerItem({ item, handleToggleFolder }: ExplorerItemProps) {
   const isFolder = 'children' in item
 
   return (
@@ -18,18 +17,18 @@ function ExplorerItem({ item }: ExplorerItemProps) {
       {/* Explorer item */}
       <button
         className={`flex items-center gap-3 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-9')}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => isFolder && handleToggleFolder && handleToggleFolder(item.id)}
       >
         {isFolder && (
           <HiOutlineChevronRight
-            className={`size-6 transition-[transform] duration-150 ${cn({ 'rotate-90': isOpen })}`}
+            className={`size-6 transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
           />
         )}
         <span className="text-lg text-nowrap">{item.name}</span>
       </button>
 
       {/* [Children] */}
-      {isOpen && isFolder && (
+      {item.isOpen && isFolder && (
         <section>
           <div className="pl-4 space-y-2">
             {item.children.map((child) => (

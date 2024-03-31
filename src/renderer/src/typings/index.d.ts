@@ -1,13 +1,17 @@
-export type FileType = {
+type BaseExplorerItemType = {
   id: string
   name: string
-  content: string
-  isFavorite: boolean
+  isSelected: boolean
 }
 
-export type FolderType = {
-  id: string
-  name: string
+export type FileType = BaseExplorerItemType & {
+  content: string
+  isFavorite: boolean
+  isOpen?: false
+}
+
+export type FolderType = BaseExplorerItemType & {
+  isOpen: boolean
   children: FileType[]
 }
 
