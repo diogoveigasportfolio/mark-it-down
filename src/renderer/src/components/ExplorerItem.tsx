@@ -30,7 +30,7 @@ function ExplorerItem({
     if (isFolder && handleToggleFolder) handleToggleFolder(item.id)
 
     // Select item
-    handleToggleSelect(item.id)
+    handleToggleSelect(item.id, true)
   }
 
   function handleRightClick() {
