@@ -3,9 +3,7 @@ import { HiOutlineChevronRight, HiStar } from 'react-icons/hi2'
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
 import { FAVORITE_FOLDER } from '@renderer/constants'
-import { useEffect } from 'react'
 import ExplorerInputForm from './Form/ExplorerInputForm'
-import Dialog from './Dialog'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -60,11 +58,6 @@ function ExplorerItem({
 
   return (
     <>
-      {/* Dialog */}
-      <Dialog>
-
-      </Dialog>
-
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button

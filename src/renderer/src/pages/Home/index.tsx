@@ -3,7 +3,7 @@ import { HiBars3 } from 'react-icons/hi2'
 import Split from 'react-split'
 import { useState } from 'react'
 
-import '../../assets/split.css'
+import '@/assets/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
@@ -12,6 +12,7 @@ import { ExplorerInputType } from '@renderer/typings'
 import SideBarHeader from './SideBarHeader'
 import Folders from './Folders'
 import Settings from './Settings'
+import Dialog from '@/components/Dialog'
 
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -42,48 +43,56 @@ function Home() {
   }
 
   return (
-    <div className="relative h-full" onClick={() => setMenuOpen(false)}>
-      <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
-        <HiBars3 className="size-12 text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-800 group-hover:dark:text-neutral-300" />
-      </button>
-      <Split
-        sizes={sideBarSizes.sizes}
-        minSize={0}
-        maxSize={[450]}
-        direction="horizontal"
-        cursor="col-resize"
-        dragInterval={1}
-        gutterSize={sideBarSizes.gutterSize}
-        gutterAlign="center"
-        className="flex h-full bg-neutral-250 dark:bg-neutral-900"
-        onDragEnd={onDragEnd}
-      >
-        {/* Side bar */}
-        <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
-          <SideBarHeader setCreationInput={setCreationInput} />
-          <Folders
-            items={items}
-            setItems={setItems}
-            handleToggleFolder={handleToggleFolder}
-            menuOpen={menuOpen}
-            setMenuOpen={setMenuOpen}
-            creationInput={creationInput}
-            setCreationInput={setCreationInput}
-            renameInput={renameInput}
-            setRenameInput={setRenameInput}
-          />
-          <Settings />
-        </div>
-        {/* Main content */}
-        <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto">
-          <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
-            <p className="text-xl text-neutral-900 dark:text-neutral-100">
-              example &gt; example.md
-            </p>
+    <>
+      {/* Dialog */}
+      <Dialog title="Delete folder named XXX">
+        <p>Are you sure you want do delete the folder named XXX?</p>
+        <p>That action will be permanent!</p>
+      </Dialog>
+      {/* Page */}
+      <div className="relative h-full" onClick={() => setMenuOpen(false)}>
+        <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
+          <HiBars3 className="size-12 text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-800 group-hover:dark:text-neutral-300" />
+        </button>
+        <Split
+          sizes={sideBarSizes.sizes}
+          minSize={0}
+          maxSize={[450]}
+          direction="horizontal"
+          cursor="col-resize"
+          dragInterval={1}
+          gutterSize={sideBarSizes.gutterSize}
+          gutterAlign="center"
+          className="flex h-full bg-neutral-250 dark:bg-neutral-900"
+          onDragEnd={onDragEnd}
+        >
+          {/* Side bar */}
+          <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
+            <SideBarHeader setCreationInput={setCreationInput} />
+            <Folders
+              items={items}
+              setItems={setItems}
+              handleToggleFolder={handleToggleFolder}
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+              creationInput={creationInput}
+              setCreationInput={setCreationInput}
+              renameInput={renameInput}
+              setRenameInput={setRenameInput}
+            />
+            <Settings />
           </div>
-        </div>
-      </Split>
-    </div>
+          {/* Main content */}
+          <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto">
+            <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
+              <p className="text-xl text-neutral-900 dark:text-neutral-100">
+                example &gt; example.md
+              </p>
+            </div>
+          </div>
+        </Split>
+      </div>
+    </>
   )
 }
 

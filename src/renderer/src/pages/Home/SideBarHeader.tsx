@@ -1,4 +1,4 @@
-import { CreationInputType } from '@renderer/typings'
+import { ExplorerInputType } from '@renderer/typings'
 import {
   HiOutlineFolderPlus,
   HiOutlineDocumentPlus,
@@ -6,12 +6,14 @@ import {
   HiEllipsisHorizontal
 } from 'react-icons/hi2'
 
+import IconButton from '@/components/IconButton'
+
 type SideBarHeaderProps = {
-  setCreationInput: React.Dispatch<React.SetStateAction<CreationInputType>>
+  setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
 }
 
-export default function SideBarHeader({setCreationInput} : SideBarHeaderProps) {
-  function openFolderInpout(){
+export default function SideBarHeader({ setCreationInput }: SideBarHeaderProps) {
+  function openFolderInpout() {
     setCreationInput((prev) => ({ ...prev, folder: { isOpen: true, value: '' } }))
   }
 
@@ -21,18 +23,18 @@ export default function SideBarHeader({setCreationInput} : SideBarHeaderProps) {
         My Files
       </h1>
       <div className="flex items-center gap-2 text-neutral-750 dark:text-neutral-250">
-        <button className="hover:bg-neutral-350 hover:dark:bg-neutral-750 p-1 rounded-md">
+        <IconButton>
           <HiOutlineDocumentPlus className="size-6 stroke-2" />
-        </button>
-        <button className="hover:bg-neutral-350 hover:dark:bg-neutral-750 p-1 rounded-md">
-          <HiOutlineFolderPlus className="size-6 stroke-2" onClick={openFolderInpout} />
-        </button>
-        <button className="hover:bg-neutral-350 hover:dark:bg-neutral-750 p-1 rounded-md">
+        </IconButton>
+        <IconButton onClick={openFolderInpout}>
+          <HiOutlineFolderPlus className="size-6 stroke-2" />
+        </IconButton>
+        <IconButton>
           <HiMiniArrowsPointingIn className="size-6" />
-        </button>
-        <button className="hover:bg-neutral-350 hover:dark:bg-neutral-750 p-1 rounded-md">
+        </IconButton>
+        <IconButton>
           <HiEllipsisHorizontal className="size-6 stroke-1" />
-        </button>
+        </IconButton>
       </div>
     </section>
   )
