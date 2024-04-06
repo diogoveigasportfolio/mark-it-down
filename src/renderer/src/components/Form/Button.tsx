@@ -6,6 +6,7 @@ type ButtonProps = {
   type?: 'button' | 'submit' | 'reset'
   variaton?: 'primary' | 'secondary' | 'danger'
   size?: 'small' | 'medium' | 'large'
+  autoFocus?: boolean
 }
 
 export default function Button({
@@ -13,7 +14,8 @@ export default function Button({
   onClick,
   type = 'button',
   variaton = 'secondary',
-  size = 'medium'
+  size = 'medium',
+  autoFocus = false
 }: ButtonProps) {
   function getVariation() {
     switch (variaton) {
@@ -31,9 +33,9 @@ export default function Button({
       case 'small':
         return 'min-w-12 min-h-4 py-1 px-2'
       case 'medium':
-        return 'min-w-16 min-h-8 py-3 px-6'
+        return 'min-w-16 min-h-8 py-2 px-6'
       case 'large':
-        return 'min-w-24 min-h-12 py-5 px-10'
+        return 'min-w-24 min-h-12 py-4 px-10'
     }
   }
 
@@ -42,6 +44,7 @@ export default function Button({
       onClick={onClick}
       type={type}
       className={`rounded-xl shadow-md ${cn(getVariation())} ${cn(getSize())}`}
+      autoFocus={autoFocus}
     >
       <span className="">{children}</span>
     </button>

@@ -7,7 +7,7 @@ export default function usePointerPos(): { x: number; y: number } {
     const handleWindowMouseMove = (event) => {
       setCoords({
         x: event.clientX + 5,
-        y: event.clientY - 120
+        y: event.clientY - 20
       })
     }
     window.addEventListener('mousemove', handleWindowMouseMove)

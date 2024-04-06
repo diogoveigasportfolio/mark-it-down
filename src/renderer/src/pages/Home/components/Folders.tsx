@@ -27,7 +27,7 @@ export default function Folders({
   menuOpen,
   setMenuOpen,
   creationInput,
-  setCreationInput,
+  setCreationInput
 }: FoldersProps) {
   const [renameInput, setRenameInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
@@ -156,36 +156,39 @@ export default function Folders({
   }
 
   return (
-    <section className="h-full relative overflow-hidden">
-      <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
-        <div>
-          {creationInput.folder.isOpen && (
-            <ExplorerInputForm
-              handleSubmit={handleFolderSubmit}
-              setExplorerInput={setCreationInput}
-              target="folder"
-            />
-          )}
-          {items.map((item) => (
-            <ExplorerItem
-              key={item.id}
-              item={item}
-              handleToggleFolder={handleToggleFolder}
-              handleToggleSelect={handleToggleSelect}
-              creationInput={creationInput}
-              setCreationInput={setCreationInput}
-              handleFileSubmit={handleFileSubmit}
-              renameInput={renameInput}
-              setRenameInput={setRenameInput}
-              handleFolderRename={handleFolderRename}
-              deleteModalIsOpen={deleteModalIsOpen}
-              setDeleteModalIsOpen={setDeleteModalIsOpen}
-              handleDeleteFolder={handleDeleteFolder}
-              handleFileRename={handleFileRename}
-            />
-          ))}
+    <>
+      <section className="h-full relative overflow-hidden">
+        <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
+          <div>
+            {creationInput.folder.isOpen && (
+              <ExplorerInputForm
+                handleSubmit={handleFolderSubmit}
+                setExplorerInput={setCreationInput}
+                target="folder"
+              />
+            )}
+            {items.map((item) => (
+              <ExplorerItem
+                key={item.id}
+                item={item}
+                handleToggleFolder={handleToggleFolder}
+                handleToggleSelect={handleToggleSelect}
+                creationInput={creationInput}
+                setCreationInput={setCreationInput}
+                handleFileSubmit={handleFileSubmit}
+                renameInput={renameInput}
+                setRenameInput={setRenameInput}
+                handleFolderRename={handleFolderRename}
+                deleteModalIsOpen={deleteModalIsOpen}
+                setDeleteModalIsOpen={setDeleteModalIsOpen}
+                handleDeleteFolder={handleDeleteFolder}
+                handleFileRename={handleFileRename}
+              />
+            ))}
+            <div className="w-full h-screen" onClick={() => handleToggleSelect('')} />
+          </div>
         </div>
-      </div>
+      </section>
       <MenuOptions ref={menuRef} menuOpen={menuOpen}>
         <MenuOption
           text="New folder.."
@@ -216,15 +219,10 @@ export default function Folders({
                 }))
               }
             />
-            <MenuOption
-              text="Delete"
-              clickHandler={() =>
-                setDeleteModalIsOpen(true)
-              }
-            />
+            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
           </>
         )}
       </MenuOptions>
-    </section>
+    </>
   )
 }
