@@ -3,7 +3,9 @@ import { HiOutlineChevronRight, HiStar } from 'react-icons/hi2'
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
 import { FAVORITE_FOLDER } from '@renderer/constants'
+
 import ExplorerInputForm from './Form/ExplorerInputForm'
+import Dialog from '@/components/Dialog'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -15,6 +17,9 @@ type ExplorerItemProps = {
   renameInput: ExplorerInputType
   setRenameInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
   handleFolderRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
+  handleDeleteFolder: (id: string) => void
+  deleteModalIsOpen: boolean
+  setDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   handleFileRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
 }
 
@@ -28,6 +33,9 @@ function ExplorerItem({
   renameInput,
   setRenameInput,
   handleFolderRename,
+  handleDeleteFolder,
+  deleteModalIsOpen,
+  setDeleteModalIsOpen,
   handleFileRename
 }: ExplorerItemProps) {
   const isFolder = 'children' in item
@@ -35,6 +43,8 @@ function ExplorerItem({
   const isRenaming = renameInput.file.isOpen || renameInput.folder.isOpen
 
   const currentIsRenaming = isRenaming && item.isSelected
+
+  const currentIsDeleting = deleteModalIsOpen && item.isSelected
 
   function handleLeftClick() {
     // Open and close folder
@@ -52,12 +62,28 @@ function ExplorerItem({
     handleFolderRename(e, item.id)
   }
 
+  function deleteFolder() {
+    handleDeleteFolder(item.id)
+  }
+
   function renameFile(e: React.FormEvent<HTMLFormElement>) {
     handleFileRename(e, item.id)
   }
 
   return (
     <>
+      {/* Dialog */}
+      {currentIsDeleting && (
+        <Dialog
+          onConfirm={deleteFolder}
+          onCancel={() => setDeleteModalIsOpen(false)}
+          title={`Delete ${item.name}`}
+        >
+          <p>Are you sure you want do delete the {isFolder ? "folder" : "file"} <span className='font-bold'>{item.name}</span> ?</p>
+          <p>That action will be permanent!</p>
+        </Dialog>
+      )}
+
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button
@@ -99,7 +125,7 @@ function ExplorerItem({
       {/* [Children] */}
       {item.isOpen && isFolder && (
         <section>
-          <div className="pl-4 py-2">
+          <div className="pl-4">
             {item.children.map((child) => (
               <ExplorerItem
                 key={child.id}
@@ -111,6 +137,9 @@ function ExplorerItem({
                 renameInput={renameInput}
                 setRenameInput={setRenameInput}
                 handleFolderRename={handleFolderRename}
+                handleDeleteFolder={handleDeleteFolder}
+                deleteModalIsOpen={deleteModalIsOpen}
+                setDeleteModalIsOpen={setDeleteModalIsOpen}
                 handleFileRename={handleFileRename}
               />
             ))}

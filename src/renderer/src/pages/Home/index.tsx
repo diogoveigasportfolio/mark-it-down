@@ -9,19 +9,14 @@ import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType } from '@renderer/typings'
 
-import SideBarHeader from './SideBarHeader'
-import Folders from './Folders'
-import Settings from './Settings'
-import Dialog from '@/components/Dialog'
+import SideBarHeader from './components/SideBarHeader'
+import Folders from './components/Folders'
+import Settings from './components/Settings'
 
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
   const [menuOpen, setMenuOpen] = useState(false)
   const [creationInput, setCreationInput] = useState<ExplorerInputType>({
-    file: { isOpen: false, value: '' },
-    folder: { isOpen: false, value: '' }
-  })
-  const [renameInput, setRenameInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
@@ -44,11 +39,6 @@ function Home() {
 
   return (
     <>
-      {/* Dialog */}
-      <Dialog title="Delete folder named XXX">
-        <p>Are you sure you want do delete the folder named XXX?</p>
-        <p>That action will be permanent!</p>
-      </Dialog>
       {/* Page */}
       <div className="relative h-full" onClick={() => setMenuOpen(false)}>
         <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
@@ -77,8 +67,6 @@ function Home() {
               setMenuOpen={setMenuOpen}
               creationInput={creationInput}
               setCreationInput={setCreationInput}
-              renameInput={renameInput}
-              setRenameInput={setRenameInput}
             />
             <Settings />
           </div>

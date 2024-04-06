@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 
 import { ExplorerInputType, ExplorerItemType, FileType, FolderType } from '@renderer/typings'
@@ -18,8 +18,6 @@ type FoldersProps = {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   creationInput: ExplorerInputType
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
-  renameInput: ExplorerInputType
-  setRenameInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
 }
 
 export default function Folders({
@@ -30,9 +28,12 @@ export default function Folders({
   setMenuOpen,
   creationInput,
   setCreationInput,
-  renameInput,
-  setRenameInput
 }: FoldersProps) {
+  const [renameInput, setRenameInput] = useState<ExplorerInputType>({
+    file: { isOpen: false, value: '' },
+    folder: { isOpen: false, value: '' }
+  })
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
@@ -141,6 +142,14 @@ export default function Folders({
     setRenameInput((prev) => ({ ...prev, folder: { isOpen: false, value: '' } }))
   }
 
+  function handleDeleteFolder(id: string) {
+    setItems((prevItems) => {
+      return prevItems.filter((item) => item.id !== id)
+    })
+
+    setDeleteModalIsOpen(false)
+  }
+
   function handleFileRename(e: React.FormEvent<HTMLFormElement>) {
     // TODO: Implement file rename
     console.log('handleFileRename')
@@ -169,6 +178,9 @@ export default function Folders({
               renameInput={renameInput}
               setRenameInput={setRenameInput}
               handleFolderRename={handleFolderRename}
+              deleteModalIsOpen={deleteModalIsOpen}
+              setDeleteModalIsOpen={setDeleteModalIsOpen}
+              handleDeleteFolder={handleDeleteFolder}
               handleFileRename={handleFileRename}
             />
           ))}
@@ -207,10 +219,7 @@ export default function Folders({
             <MenuOption
               text="Delete"
               clickHandler={() =>
-                setCreationInput((prev) => ({
-                  ...prev,
-                  file: { isOpen: true, value: '' }
-                }))
+                setDeleteModalIsOpen(true)
               }
             />
           </>
