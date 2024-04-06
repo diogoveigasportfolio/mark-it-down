@@ -156,7 +156,7 @@ export default function Folders({
   }
 
   return (
-    <section className="h-full relative">
+    <section className="h-full relative overflow-hidden">
       <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
         <div>
           {creationInput.folder.isOpen && (
