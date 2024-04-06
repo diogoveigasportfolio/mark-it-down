@@ -22,7 +22,7 @@ export type SideBarSizesType = {
   gutterSize: number
 }
 
-export type CreationInputType = {
+export type ExplorerInputType = {
   file: { isOpen: boolean; value: string }
   folder: { isOpen: boolean; value: string }
 }

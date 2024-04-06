@@ -7,7 +7,7 @@ import '../../assets/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
-import { CreationInputType } from '@renderer/typings'
+import { ExplorerInputType } from '@renderer/typings'
 
 import SideBarHeader from './SideBarHeader'
 import Folders from './Folders'
@@ -16,12 +16,16 @@ import Settings from './Settings'
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [creationInput, setCreationInput] = useState<CreationInputType>({
+  const [creationInput, setCreationInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  // const [items, setItems] = useState([...baseExplorerData, ...explorerData])
-  const [items, setItems] = useState([...baseExplorerData])
+  const [renameInput, setRenameInput] = useState<ExplorerInputType>({
+    file: { isOpen: false, value: '' },
+    folder: { isOpen: false, value: '' }
+  })
+  const [items, setItems] = useState([...baseExplorerData, ...explorerData])
+  // const [items, setItems] = useState([...baseExplorerData])
 
   function handleToggleFolder(id: string) {
     setItems((prevItems) => {
@@ -65,6 +69,8 @@ function Home() {
             setMenuOpen={setMenuOpen}
             creationInput={creationInput}
             setCreationInput={setCreationInput}
+            renameInput={renameInput}
+            setRenameInput={setRenameInput}
           />
           <Settings />
         </div>

@@ -1,13 +1,14 @@
 import { useMemo, useRef } from 'react'
 import { nanoid } from 'nanoid'
 
-import { CreationInputType, ExplorerItemType, FileType, FolderType } from '@renderer/typings'
+import { ExplorerInputType, ExplorerItemType, FileType, FolderType } from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
-import Input from '@renderer/components/Input'
+import Input from '@renderer/components/Form/Input'
+import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -15,8 +16,10 @@ type FoldersProps = {
   handleToggleFolder: (id: string) => void
   menuOpen: boolean
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
-  creationInput: CreationInputType
-  setCreationInput: React.Dispatch<React.SetStateAction<CreationInputType>>
+  creationInput: ExplorerInputType
+  setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
+  renameInput: ExplorerInputType
+  setRenameInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
 }
 
 export default function Folders({
@@ -26,7 +29,9 @@ export default function Folders({
   menuOpen,
   setMenuOpen,
   creationInput,
-  setCreationInput
+  setCreationInput,
+  renameInput,
+  setRenameInput
 }: FoldersProps) {
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
@@ -109,8 +114,8 @@ export default function Folders({
 
     const folderId = currentlySelected.item.id
 
-    setItems(prevItems => {
-      return prevItems.map(item => {
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
         if (item.id === folderId) {
           return {
             ...item,
@@ -124,27 +129,33 @@ export default function Folders({
     setCreationInput((prev) => ({ ...prev, file: { isOpen: false, value: '' } }))
   }
 
+  function handleFolderRename(e: React.FormEvent<HTMLFormElement>, id: string) {
+    e.preventDefault()
+
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        return item.id === id ? { ...item, name: renameInput.folder.value } : item
+      })
+    })
+
+    setRenameInput((prev) => ({ ...prev, folder: { isOpen: false, value: '' } }))
+  }
+
+  function handleFileRename(e: React.FormEvent<HTMLFormElement>) {
+    // TODO: Implement file rename
+    console.log('handleFileRename')
+  }
+
   return (
     <section className="h-full relative">
       <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
         <div>
           {creationInput.folder.isOpen && (
-            <form onSubmit={handleFolderSubmit}>
-              <Input
-                onChange={(e) =>
-                  setCreationInput((prev) => ({
-                    ...prev,
-                    folder: { isOpen: true, value: e.target.value }
-                  }))
-                }
-                onBlur={() => {
-                  setCreationInput((prev) => ({
-                    ...prev,
-                    folder: { isOpen: false, value: '' }
-                  }))
-                }}
-              />
-            </form>
+            <ExplorerInputForm
+              handleSubmit={handleFolderSubmit}
+              setExplorerInput={setCreationInput}
+              target="folder"
+            />
           )}
           {items.map((item) => (
             <ExplorerItem
@@ -155,6 +166,10 @@ export default function Folders({
               creationInput={creationInput}
               setCreationInput={setCreationInput}
               handleFileSubmit={handleFileSubmit}
+              renameInput={renameInput}
+              setRenameInput={setRenameInput}
+              handleFolderRename={handleFolderRename}
+              handleFileRename={handleFileRename}
             />
           ))}
         </div>
@@ -183,9 +198,9 @@ export default function Folders({
             <MenuOption
               text="Rename.."
               clickHandler={() =>
-                setCreationInput((prev) => ({
+                setRenameInput((prev) => ({
                   ...prev,
-                  file: { isOpen: true, value: '' }
+                  folder: { isOpen: true, value: '' }
                 }))
               }
             />
