@@ -5,6 +5,7 @@ import { cn } from '@renderer/utils'
 import { FAVORITE_FOLDER } from '@renderer/constants'
 import { useEffect } from 'react'
 import ExplorerInputForm from './Form/ExplorerInputForm'
+import Dialog from './Dialog'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -59,10 +60,15 @@ function ExplorerItem({
 
   return (
     <>
+      {/* Dialog */}
+      <Dialog>
+
+      </Dialog>
+
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button
-          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-9')} ${cn(item.isSelected ? 'bg-neutral-300 dark:bg-neutral-650' : '')}`}
+          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-9')} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
           onClick={handleLeftClick}
           onAuxClick={handleRightClick}
         >

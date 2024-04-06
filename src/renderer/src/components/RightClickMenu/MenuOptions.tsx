@@ -11,7 +11,7 @@ const MenuOptions = forwardRef(function MenuOptions({ children, menuOpen }: Menu
     <ul
       // @ts-ignore eslint-disable-next-line
       ref={ref}
-      className={`absolute min-w-60 p-2 space-y-1 divide-neutral-500 bg-neutral-750 rounded-lg ${cn(menuOpen ? 'block' : 'hidden')}`}
+      className={`absolute min-w-60 p-2 space-y-1 bg-neutral-350 dark:bg-neutral-750 rounded-lg ${cn(menuOpen ? 'block' : 'hidden')}`}
     >
       {children}
     </ul>
