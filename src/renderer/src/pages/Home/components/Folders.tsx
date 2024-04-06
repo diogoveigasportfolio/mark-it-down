@@ -120,6 +120,7 @@ export default function Folders({
         if (item.id === folderId) {
           return {
             ...item,
+            isOpen: true,
             children: [...item.children, newFile]
           }
         }
