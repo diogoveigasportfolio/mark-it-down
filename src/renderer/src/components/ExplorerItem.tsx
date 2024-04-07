@@ -52,7 +52,6 @@ function ExplorerItem({
 
     // Select item
     handleToggleSelect(item.id, true)
-    // console.log(item)
   }
 
   function handleRightClick() {
@@ -80,7 +79,10 @@ function ExplorerItem({
           onCancel={() => setDeleteModalIsOpen(false)}
           title={`Delete ${item.name}`}
         >
-          <p>Are you sure you want do delete the {isFolder ? "folder" : "file"} <span className='font-bold'>{item.name}</span> ?</p>
+          <p>
+            Are you sure you want do delete the {isFolder ? 'folder' : 'file'}{' '}
+            <span className="font-bold">{item.name}</span> ?
+          </p>
           <p>That action will be permanent!</p>
         </Dialog>
       )}
@@ -88,15 +90,17 @@ function ExplorerItem({
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button
-          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-9')} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
+          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? "pl-4" : "pl-5")} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
           onClick={handleLeftClick}
           onAuxClick={handleRightClick}
         >
-          {isFolder && (
+          {isFolder ? (
             <HiOutlineChevronRight
               className={`size-6 transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
             />
-          )}
+          ) : 
+            <span>📄</span>
+          }
           <span className="text-lg text-nowrap flex item-center gap-2">
             {item.id === FAVORITE_FOLDER && <HiStar className="size-6" />}
             {item.name}
@@ -126,25 +130,23 @@ function ExplorerItem({
       {/* [Children] */}
       {item.isOpen && isFolder && (
         <section>
-          <div className="pl-4">
-            {item.children.map((child) => (
-              <ExplorerItem
-                key={child.id}
-                item={child}
-                handleToggleSelect={handleToggleSelect}
-                creationInput={creationInput}
-                setCreationInput={setCreationInput}
-                handleFileSubmit={handleFileSubmit}
-                renameInput={renameInput}
-                setRenameInput={setRenameInput}
-                handleFolderRename={handleFolderRename}
-                handleDeleteFolder={handleDeleteFolder}
-                deleteModalIsOpen={deleteModalIsOpen}
-                setDeleteModalIsOpen={setDeleteModalIsOpen}
-                handleFileRename={handleFileRename}
-              />
-            ))}
-          </div>
+          {item.children.map((child) => (
+            <ExplorerItem
+              key={child.id}
+              item={child}
+              handleToggleSelect={handleToggleSelect}
+              creationInput={creationInput}
+              setCreationInput={setCreationInput}
+              handleFileSubmit={handleFileSubmit}
+              renameInput={renameInput}
+              setRenameInput={setRenameInput}
+              handleFolderRename={handleFolderRename}
+              handleDeleteFolder={handleDeleteFolder}
+              deleteModalIsOpen={deleteModalIsOpen}
+              setDeleteModalIsOpen={setDeleteModalIsOpen}
+              handleFileRename={handleFileRename}
+            />
+          ))}
         </section>
       )}
     </>

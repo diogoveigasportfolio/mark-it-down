@@ -71,27 +71,32 @@ export default function Folders({
         if (folder.id === id) {
           return {
             ...folder,
-            isSelected: override ? override : !folder.isSelected
+            isSelected: override ? override : !folder.isSelected,
+            children: childrenSelection(folder.children)
           }
         }
         return {
           ...folder,
           isSelected: false,
-          children: folder.children.map((file) => {
-            if (file.id === id) {
-              return {
-                ...file,
-                isSelected: override ? override : !file.isSelected
-              }
-            }
-            return {
-              ...file,
-              isSelected: false
-            }
-          })
+          children: childrenSelection(folder.children)
         }
       })
     })
+
+    function childrenSelection(files: FileType[]) {
+      return files.map((file) => {
+        if (file.id === id) {
+          return {
+            ...file,
+            isSelected: override ? override : !file.isSelected
+          }
+        }
+        return {
+          ...file,
+          isSelected: false
+        }
+      })
+    }
   }
 
   function findSelectedExplorerItem(items): { item: ExplorerItemType; isFolder: boolean } {
