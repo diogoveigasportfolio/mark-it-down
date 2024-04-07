@@ -3,7 +3,7 @@ import { HiBars3 } from 'react-icons/hi2'
 import Split from 'react-split'
 import { useState } from 'react'
 
-import '@/assets/split.css'
+import '@/assets/styles/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'

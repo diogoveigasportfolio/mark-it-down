@@ -1,4 +1,5 @@
-import './assets/index.css'
+import './assets/styles/index.css'
+import './assets/styles/scrollbar.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
