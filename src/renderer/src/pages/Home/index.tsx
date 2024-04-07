@@ -23,20 +23,6 @@ function Home() {
   const [items, setItems] = useState<ExplorerItemType[]>([...baseExplorerData, ...explorerData])
   // const [items, setItems] = useState([...baseExplorerData])
 
-  function handleToggleFolder(id: string) {
-    setItems((prevItems) => {
-      return prevItems.map((item) => {
-        if ('children' in item && item.id === id) {
-          return {
-            ...item,
-            isOpen: !item.isOpen
-          }
-        }
-        return item
-      })
-    })
-  }
-
   function findSelectedExplorerItem(items: ExplorerItemType[]): {
     item: ExplorerItemType | undefined
     isFolder: boolean
@@ -90,7 +76,6 @@ function Home() {
             <Folders
               items={items}
               setItems={setItems}
-              handleToggleFolder={handleToggleFolder}
               menuOpen={menuOpen}
               setMenuOpen={setMenuOpen}
               creationInput={creationInput}

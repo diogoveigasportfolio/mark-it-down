@@ -12,7 +12,6 @@ import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 type FoldersProps = {
   items: ExplorerItemType[]
   setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
-  handleToggleFolder: (id: string) => void
   menuOpen: boolean
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   creationInput: ExplorerInputType
@@ -23,7 +22,6 @@ type FoldersProps = {
 export default function Folders({
   items,
   setItems,
-  handleToggleFolder,
   menuOpen,
   setMenuOpen,
   creationInput,
@@ -53,6 +51,20 @@ export default function Folders({
     menuRef.current.style.top = `${coords.y}px`
 
     setMenuOpen(true)
+  }
+
+  function handleToggleFolder(id: string) {
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        if ('children' in item && item.id === id) {
+          return {
+            ...item,
+            isOpen: !item.isOpen
+          }
+        }
+        return item
+      })
+    })
   }
 
   function handleFolderSubmit(e: React.FormEvent<HTMLFormElement>) {
