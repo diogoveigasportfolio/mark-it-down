@@ -71,6 +71,7 @@ function Home() {
             <SideBarHeader
               setCreationInput={setCreationInput}
               items={items}
+              setItems={setItems}
               findSelectedExplorerItem={findSelectedExplorerItem}
             />
             <Folders

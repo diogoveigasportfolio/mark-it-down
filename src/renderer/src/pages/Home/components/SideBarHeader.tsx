@@ -12,11 +12,20 @@ import { useMemo } from 'react'
 
 type SideBarHeaderProps = {
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
-  findSelectedExplorerItem: (items: ExplorerItemType[]) => { item: ExplorerItemType | undefined; isFolder: boolean }
+  findSelectedExplorerItem: (items: ExplorerItemType[]) => {
+    item: ExplorerItemType | undefined
+    isFolder: boolean
+  }
+  setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
   items: ExplorerItemType[]
 }
 
-export default function SideBarHeader({ setCreationInput, findSelectedExplorerItem, items }: SideBarHeaderProps) {
+export default function SideBarHeader({
+  setCreationInput,
+  findSelectedExplorerItem,
+  setItems,
+  items
+}: SideBarHeaderProps) {
   const selectedItem = useMemo(() => findSelectedExplorerItem(items), [items])
 
   function openFolderInput() {
@@ -25,8 +34,16 @@ export default function SideBarHeader({ setCreationInput, findSelectedExplorerIt
 
   function openFileInput() {
     // Open file input only if a folder is selected
-    if(selectedItem.item)
+    if (selectedItem.item)
       setCreationInput((prev) => ({ ...prev, file: { isOpen: true, value: '' } }))
+  }
+
+  function collapseAll() {
+    setItems((folders) => {
+      return folders.map((folder) => {
+        return { ...folder, isOpen: false }
+      })
+    })
   }
 
   return (
@@ -41,7 +58,7 @@ export default function SideBarHeader({ setCreationInput, findSelectedExplorerIt
         <IconButton onClick={openFolderInput}>
           <HiOutlineFolderPlus className="size-6 stroke-2" />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={collapseAll}>
           <HiMiniArrowsPointingIn className="size-6" />
         </IconButton>
         <IconButton>
