@@ -201,6 +201,21 @@ export default function Folders({
     setRenameInput((prev) => ({ ...prev, file: { isOpen: false, value: '' } }))
   }
 
+  function handleDeleteFile(id: string) {
+    setItems((prevItems) => {
+      return prevItems.map((folder) => {
+        if ('children' in folder) {
+          const files = folder.children.filter((file) => file.id !== id)
+          return { ...folder, children: files }
+        }
+
+        return folder
+      }) as ExplorerItemType[]
+    })
+
+    setDeleteModalIsOpen(false)
+  }
+
   return (
     <>
       <section className="h-full relative overflow-hidden">
@@ -229,6 +244,7 @@ export default function Folders({
                 setDeleteModalIsOpen={setDeleteModalIsOpen}
                 handleDeleteFolder={handleDeleteFolder}
                 handleFileRename={handleFileRename}
+                handleDeleteFile={handleDeleteFile}
               />
             ))}
             <div

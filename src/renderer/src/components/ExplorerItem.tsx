@@ -21,6 +21,7 @@ type ExplorerItemProps = {
   deleteModalIsOpen: boolean
   setDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   handleFileRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
+  handleDeleteFile: (id: string) => void
 }
 
 function ExplorerItem({
@@ -36,7 +37,8 @@ function ExplorerItem({
   handleDeleteFolder,
   deleteModalIsOpen,
   setDeleteModalIsOpen,
-  handleFileRename
+  handleFileRename,
+  handleDeleteFile
 }: ExplorerItemProps) {
   const isFolder = 'children' in item
 
@@ -70,12 +72,16 @@ function ExplorerItem({
     handleFileRename(e, item.id)
   }
 
+  function deleteFile() {
+    handleDeleteFile(item.id)
+  }
+
   return (
     <>
       {/* Dialog */}
       {currentIsDeleting && (
         <Dialog
-          onConfirm={deleteFolder}
+          onConfirm={isFolder ? deleteFolder : deleteFile}
           onCancel={() => setDeleteModalIsOpen(false)}
           title={`Delete ${item.name}`}
         >
@@ -145,6 +151,7 @@ function ExplorerItem({
               deleteModalIsOpen={deleteModalIsOpen}
               setDeleteModalIsOpen={setDeleteModalIsOpen}
               handleFileRename={handleFileRename}
+              handleDeleteFile={handleDeleteFile}
             />
           ))}
         </section>
