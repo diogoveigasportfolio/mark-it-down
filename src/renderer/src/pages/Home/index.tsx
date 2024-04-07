@@ -37,6 +37,30 @@ function Home() {
     })
   }
 
+  function findSelectedExplorerItem(items: ExplorerItemType[]): {
+    item: ExplorerItemType | undefined
+    isFolder: boolean
+  } {
+    let foundItem: ExplorerItemType | undefined = items.find(
+      (item: ExplorerItemType) => item.isSelected
+    )
+
+    if (foundItem) {
+      return { item: foundItem, isFolder: 'children' in foundItem }
+    }
+
+    items.forEach((item) => {
+      if ('children' in item) {
+        const result = findSelectedExplorerItem(item.children)
+        if (result.item) {
+          foundItem = result.item
+        }
+      }
+    })
+
+    return { item: foundItem, isFolder: false }
+  }
+
   return (
     <>
       {/* Page */}
@@ -58,7 +82,11 @@ function Home() {
         >
           {/* Side bar */}
           <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
-            <SideBarHeader setCreationInput={setCreationInput} />
+            <SideBarHeader
+              setCreationInput={setCreationInput}
+              items={items}
+              findSelectedExplorerItem={findSelectedExplorerItem}
+            />
             <Folders
               items={items}
               setItems={setItems}
@@ -67,6 +95,7 @@ function Home() {
               setMenuOpen={setMenuOpen}
               creationInput={creationInput}
               setCreationInput={setCreationInput}
+              findSelectedExplorerItem={findSelectedExplorerItem}
             />
             <Settings />
           </div>

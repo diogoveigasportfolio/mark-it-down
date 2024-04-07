@@ -17,6 +17,7 @@ type FoldersProps = {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   creationInput: ExplorerInputType
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
+  findSelectedExplorerItem: (items: ExplorerItemType[]) => { item: ExplorerItemType | undefined; isFolder: boolean }
 }
 
 export default function Folders({
@@ -26,7 +27,8 @@ export default function Folders({
   menuOpen,
   setMenuOpen,
   creationInput,
-  setCreationInput
+  setCreationInput,
+  findSelectedExplorerItem
 }: FoldersProps) {
   const [renameInput, setRenameInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
@@ -103,30 +105,6 @@ export default function Folders({
         }
       })
     }
-  }
-
-  function findSelectedExplorerItem(items: ExplorerItemType[]): {
-    item: ExplorerItemType | undefined
-    isFolder: boolean
-  } {
-    let foundItem: ExplorerItemType | undefined = items.find(
-      (item: ExplorerItemType) => item.isSelected
-    )
-
-    if (foundItem) {
-      return { item: foundItem, isFolder: 'children' in foundItem }
-    }
-
-    items.forEach((item) => {
-      if ('children' in item) {
-        const result = findSelectedExplorerItem(item.children)
-        if (result.item) {
-          foundItem = result.item
-        }
-      }
-    })
-
-    return { item: foundItem, isFolder: false }
   }
 
   function handleFileSubmit(e: React.FormEvent<HTMLFormElement>) {
