@@ -24,7 +24,7 @@ export default function Dialog({ title, children, onCancel, onConfirm }: DialogP
             {title}
           </h1>
           <IconButton onClick={onCancel}>
-            <HiMiniXMark className="size-6 fill-neutral-300 dark:fill-neutral-600" />
+            <HiMiniXMark className="size-6 fill-neutral-500 dark:fill-neutral-600" />
           </IconButton>
         </div>
         <hr className="border-t border-t-neutral-600" />
