@@ -18,7 +18,7 @@ export default function Dialog({ title, children, onCancel, onConfirm }: DialogP
   return (
     <div className="z-10 fixed top-0 left-0 right-0 bottom-0 w-full h-full flex justify-center items-center bg-black bg-opacity-30">
       <div onClick={onCancel} className="fixed top-0 left-0 right-0 bottom-0 w-full h-full" />
-      <div className="z-20 min-w-[500px] min-h-24 bg-neutral-350 dark:bg-neutral-850 rounded-2xl border border-neutral-900 dark:border-neutral-600">
+      <div className="z-20 min-w-[500px] min-h-24 bg-neutral-150 dark:bg-neutral-850 rounded-2xl border border-neutral-900 dark:border-neutral-600">
         <div className="p-6 flex justify-between">
           <h1 className="text-xl text-neutral-800 dark:text-neutral-200 font-medum text-center font-medium">
             {title}

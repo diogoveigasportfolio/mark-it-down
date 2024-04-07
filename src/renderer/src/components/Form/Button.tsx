@@ -22,7 +22,7 @@ export default function Button({
       case 'primary':
         return 'bg-blue-600 hover:bg-opacity-85 text-white border-2 border-transparent'
       case 'secondary':
-        return 'bg-neutral-500 hover:bg-opacity-85 border-2 border-transparent dark:border-neutral-450 text-white'
+        return 'bg-neutral-400 dark:bg-neutral-500 hover:bg-opacity-85 border-2 border-transparent dark:border-neutral-450 text-neutral-900 dark:text-white'
       case 'danger':
         return 'bg-red-600 hover:bg-opacity-85 text-white border-2 border-transparent'
     }
