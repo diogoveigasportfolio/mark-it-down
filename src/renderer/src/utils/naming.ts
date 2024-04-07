@@ -6,24 +6,15 @@
  * - Checking if a name is valid
  * - Formatting a name in a specific way
  *
- * TODO: Correct example
- * @example
- * import { isValidName, formatName } from './naming';
- *
- * const name = 'John Doe';
- *
- * if (isValidName(name)) {
- *   console.log(formatName(name));
- * }
  */
 
 export function nameIsValid(name: string): boolean {
-  return /^[a-zA-Z0-9\s._-]+$/.test(name)
+  return /^[a-zA-Z0-9\s._-]+(\.[a-zA-Z0-9\s._-]+)?$/.test(name.trim())
 }
 
-export function formatFile(name: string): string {
+export function formatFileName(name: string): string {
   if (!nameIsValid(name)) {
-    throw new Error('Invalid name')
+    throw new Error('File name is invalid')
   }
 
   const pathEnd = '.md'

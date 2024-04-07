@@ -5,7 +5,7 @@ import { cn } from '@renderer/utils'
 import { FAVORITE_FOLDER } from '@renderer/constants'
 
 import ExplorerInputForm from './Form/ExplorerInputForm'
-import Dialog from '@/components/Dialog'
+import Dialog from '@renderer/components/Popups/Dialog'
 
 type ExplorerItemProps = {
   item: ExplorerItemType

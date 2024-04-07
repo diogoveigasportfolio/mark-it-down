@@ -1,13 +1,21 @@
 import { useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 
-import { ExplorerInputType, ExplorerItemType, FileType, FolderType } from '@renderer/typings'
+import {
+  ExplorerInputType,
+  ExplorerItemType,
+  FileType,
+  FolderType,
+  ToastState
+} from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
+import Toast from '@renderer/components/Popups/Toast'
+import { formatFileName, nameIsValid } from '@renderer/utils/naming'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -16,7 +24,10 @@ type FoldersProps = {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   creationInput: ExplorerInputType
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
-  findSelectedExplorerItem: (items: ExplorerItemType[]) => { item: ExplorerItemType | undefined; isFolder: boolean }
+  findSelectedExplorerItem: (items: ExplorerItemType[]) => {
+    item: ExplorerItemType | undefined
+    isFolder: boolean
+  }
 }
 
 export default function Folders({
@@ -33,6 +44,12 @@ export default function Folders({
     folder: { isOpen: false, value: '' }
   })
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
+  const [toast, setToast] = useState<ToastState>({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'error'
+  })
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
@@ -70,9 +87,16 @@ export default function Folders({
   function handleFolderSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
+    const name = creationInput.folder.value
+
+    if(!nameIsValid(name)){
+      showErrorToast("Couldn't create folder", 'Folder name is invalid')
+      return
+    }
+
     const newFolder: FolderType = {
       id: nanoid(),
-      name: creationInput.folder.value,
+      name,
       isOpen: false,
       isSelected: false,
       children: []
@@ -122,9 +146,18 @@ export default function Folders({
   function handleFileSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
+    let name = ''
+
+    try {
+      name = formatFileName(creationInput.file.value)
+    } catch (error) {
+      showErrorToast("Couldn't create file", (error as Error).message)
+      return
+    }
+
     const newFile: FileType = {
       id: nanoid(),
-      name: creationInput.file.value,
+      name: name,
       isSelected: false,
       content: '',
       isFavorite: false
@@ -153,9 +186,16 @@ export default function Folders({
   function handleFolderRename(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault()
 
+    const name = renameInput.folder.value
+
+    if(!nameIsValid(name)){
+      showErrorToast("Couldn't rename folder", 'Folder name is invalid')
+      return
+    }
+
     setItems((prevItems) => {
       return prevItems.map((item) => {
-        return item.id === id ? { ...item, name: renameInput.folder.value } : item
+        return item.id === id ? { ...item, name: name } : item
       })
     })
 
@@ -173,12 +213,21 @@ export default function Folders({
   function handleFileRename(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault()
 
+    let name = ''
+
+    try {
+      name = formatFileName(renameInput.file.value)
+    } catch (error) {
+      showErrorToast("Couldn't rename file", (error as Error).message)
+      return
+    }
+
     setItems((prevItems) => {
       return prevItems.map((folder) => {
         if ('children' in folder) {
           const updatedChildren = folder.children.map((file) => {
             if (file.id === id) {
-              return { ...file, name: renameInput.file.value }
+              return { ...file, name }
             }
             return file
           })
@@ -206,8 +255,27 @@ export default function Folders({
     setDeleteModalIsOpen(false)
   }
 
+  function closeToast() {
+    setToast((prev) => ({ ...prev, isOpen: false }))
+  }
+
+  function showErrorToast(title: string, message: string) {
+    setToast({
+      isOpen: true,
+      title,
+      message,
+      type: 'error'
+    })
+  }
+
   return (
     <>
+      {toast.isOpen && (
+        <Toast title={toast.title} type={toast.type} onClose={closeToast}>
+          {toast.message}
+        </Toast>
+      )}
+
       <section className="h-full relative overflow-hidden">
         <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
           <div>

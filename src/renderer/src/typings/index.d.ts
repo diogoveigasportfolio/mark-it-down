@@ -26,3 +26,10 @@ export type ExplorerInputType = {
   file: { isOpen: boolean; value: string }
   folder: { isOpen: boolean; value: string }
 }
+
+export type ToastState = {
+  isOpen: boolean
+  title: string
+  message: string
+  type: 'success' | 'warning' | 'error'
+}
