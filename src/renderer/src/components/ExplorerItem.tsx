@@ -52,6 +52,7 @@ function ExplorerItem({
 
     // Select item
     handleToggleSelect(item.id, true)
+    // console.log(item)
   }
 
   function handleRightClick() {

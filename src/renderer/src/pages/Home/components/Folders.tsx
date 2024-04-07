@@ -7,7 +7,6 @@ import usePointerPos from '@renderer/hooks/usePointerPos'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
-import Input from '@renderer/components/Form/Input'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 
 type FoldersProps = {
@@ -68,16 +67,28 @@ export default function Folders({
 
   function handleToggleSelect(id: string, override?: boolean) {
     setItems((prevItems) => {
-      return prevItems.map((item) => {
-        if (item.id === id) {
+      return prevItems.map((folder) => {
+        if (folder.id === id) {
           return {
-            ...item,
-            isSelected: override ? override : !item.isSelected
+            ...folder,
+            isSelected: override ? override : !folder.isSelected
           }
         }
         return {
-          ...item,
-          isSelected: false
+          ...folder,
+          isSelected: false,
+          children: folder.children.map((file) => {
+            if (file.id === id) {
+              return {
+                ...file,
+                isSelected: override ? override : !file.isSelected
+              }
+            }
+            return {
+              ...file,
+              isSelected: false
+            }
+          })
         }
       })
     })
