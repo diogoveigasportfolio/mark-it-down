@@ -90,7 +90,7 @@ function ExplorerItem({
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button
-          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? "pl-4" : "pl-5")} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
+          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? "pl-4" : "pl-12")} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
           onClick={handleLeftClick}
           onAuxClick={handleRightClick}
         >

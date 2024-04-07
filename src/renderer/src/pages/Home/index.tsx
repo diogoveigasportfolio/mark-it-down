@@ -7,7 +7,7 @@ import '@/assets/styles/split.css'
 import useSideBarSizes from '../../hooks/useSideBarSizes'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
-import { ExplorerInputType } from '@renderer/typings'
+import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 
 import SideBarHeader from './components/SideBarHeader'
 import Folders from './components/Folders'
@@ -20,7 +20,7 @@ function Home() {
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  const [items, setItems] = useState([...baseExplorerData, ...explorerData])
+  const [items, setItems] = useState<ExplorerItemType[]>([...baseExplorerData, ...explorerData])
   // const [items, setItems] = useState([...baseExplorerData])
 
   function handleToggleFolder(id: string) {

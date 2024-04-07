@@ -11,7 +11,7 @@ import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 
 type FoldersProps = {
   items: ExplorerItemType[]
-  setItems: React.Dispatch<React.SetStateAction<FolderType[]>>
+  setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
   handleToggleFolder: (id: string) => void
   menuOpen: boolean
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -72,6 +72,8 @@ export default function Folders({
   function handleToggleSelect(id: string, override?: boolean) {
     setItems((prevItems) => {
       return prevItems.map((folder) => {
+        if (!('children' in folder)) return folder
+
         if (folder.id === id) {
           return {
             ...folder,
@@ -103,8 +105,13 @@ export default function Folders({
     }
   }
 
-  function findSelectedExplorerItem(items): { item: ExplorerItemType; isFolder: boolean } {
-    let foundItem = items.find((item: ExplorerItemType) => item.isSelected)
+  function findSelectedExplorerItem(items: ExplorerItemType[]): {
+    item: ExplorerItemType | undefined
+    isFolder: boolean
+  } {
+    let foundItem: ExplorerItemType | undefined = items.find(
+      (item: ExplorerItemType) => item.isSelected
+    )
 
     if (foundItem) {
       return { item: foundItem, isFolder: 'children' in foundItem }
@@ -114,7 +121,7 @@ export default function Folders({
       if ('children' in item) {
         const result = findSelectedExplorerItem(item.children)
         if (result.item) {
-          foundItem = result
+          foundItem = result.item
         }
       }
     })
@@ -133,18 +140,18 @@ export default function Folders({
       isFavorite: false
     }
 
-    const folderId = currentlySelected.item.id
+    const folderId = currentlySelected?.item?.id
 
     setItems((prevItems) => {
-      return prevItems.map((item) => {
-        if (item.id === folderId) {
+      return prevItems.map((folder) => {
+        if (folder.id === folderId && 'children' in folder) {
           return {
-            ...item,
+            ...folder,
             isOpen: true,
-            children: [...item.children, newFile]
+            children: [...folder.children, newFile]
           }
         }
-        return item
+        return folder
       })
     })
 
@@ -173,9 +180,25 @@ export default function Folders({
     setDeleteModalIsOpen(false)
   }
 
-  function handleFileRename(e: React.FormEvent<HTMLFormElement>) {
-    // TODO: Implement file rename
-    console.log('handleFileRename')
+  function handleFileRename(e: React.FormEvent<HTMLFormElement>, id: string) {
+    e.preventDefault()
+
+    setItems((prevItems) => {
+      return prevItems.map((folder) => {
+        if ('children' in folder) {
+          const updatedChildren = folder.children.map((file) => {
+            if (file.id === id) {
+              return { ...file, name: renameInput.file.value }
+            }
+            return file
+          })
+          return { ...folder, children: updatedChildren }
+        }
+        return folder
+      })
+    })
+
+    setRenameInput((prev) => ({ ...prev, file: { isOpen: false, value: '' } }))
   }
 
   return (
