@@ -38,6 +38,10 @@ export default function Folders({
 
   const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
 
+  const anyIsSelected = currentlySelected.item
+  const folderIsSelected = currentlySelected.isFolder
+  const fileIsSelected = !currentlySelected.isFolder && currentlySelected.item
+
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
 
@@ -144,6 +148,8 @@ export default function Folders({
       })
     })
 
+    handleToggleSelect(newFile.id, true)
+
     setCreationInput((prev) => ({ ...prev, file: { isOpen: false, value: '' } }))
   }
 
@@ -202,21 +208,27 @@ export default function Folders({
                 handleFileRename={handleFileRename}
               />
             ))}
-            <div className="w-full h-screen" onClick={() => handleToggleSelect('')} />
+            <div
+              className="w-full h-screen"
+              onClick={() => handleToggleSelect('')}
+              onAuxClick={() => handleToggleSelect('')}
+            />
           </div>
         </div>
       </section>
       <MenuOptions ref={menuRef} menuOpen={menuOpen}>
-        <MenuOption
-          text="New folder.."
-          clickHandler={() =>
-            setCreationInput((prev) => ({
-              ...prev,
-              folder: { isOpen: true, value: '' }
-            }))
-          }
-        />
-        {currentlySelected && currentlySelected.isFolder && (
+        {!anyIsSelected && (
+          <MenuOption
+            text="New folder.."
+            clickHandler={() =>
+              setCreationInput((prev) => ({
+                ...prev,
+                folder: { isOpen: true, value: '' }
+              }))
+            }
+          />
+        )}
+        {folderIsSelected && (
           <>
             <MenuOption
               text="New file.."
@@ -233,6 +245,20 @@ export default function Folders({
                 setRenameInput((prev) => ({
                   ...prev,
                   folder: { isOpen: true, value: '' }
+                }))
+              }
+            />
+            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
+          </>
+        )}
+        {fileIsSelected && (
+          <>
+            <MenuOption
+              text="Rename.."
+              clickHandler={() =>
+                setRenameInput((prev) => ({
+                  ...prev,
+                  file: { isOpen: true, value: '' }
                 }))
               }
             />

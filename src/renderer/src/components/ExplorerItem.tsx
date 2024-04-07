@@ -129,7 +129,7 @@ function ExplorerItem({
 
       {/* [Children] */}
       {item.isOpen && isFolder && (
-        <section>
+        <section> 
           {item.children.map((child) => (
             <ExplorerItem
               key={child.id}
