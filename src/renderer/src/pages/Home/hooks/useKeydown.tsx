@@ -1,17 +1,18 @@
-import { useEffect } from "react";
+import { useEffect } from "react"
 
 export default function useKeydown(key: string, callback: () => void){
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if(event.key === key){
-        callback();
+        console.log(callback)
+        callback()
       }
     }
 
-    window.addEventListener('keydown', handler);
+    window.addEventListener('keydown', handler, true)
     
     return () => {
-      window.removeEventListener('keydown', handler);
+      window.removeEventListener('keydown', handler)
     }
-  }, [key, callback]);
+  }, [key])
 }

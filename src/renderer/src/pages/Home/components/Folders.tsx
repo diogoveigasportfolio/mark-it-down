@@ -55,7 +55,7 @@ export default function Folders({
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
-  useKeydown("F2", () => console.log("F2 pressed"))
+  useKeydown("F2", handleItemRename)
   useKeydown("Delete", () => console.log("Delete pressed"))
 
   const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
@@ -272,6 +272,12 @@ export default function Folders({
       message,
       type: 'error'
     })
+  }
+
+  function handleItemRename(){
+    const renameItemType = folderIsSelected ? "folder" : "file"
+
+    setRenameInput((prev) => ({ ...prev, [renameItemType]: { isOpen: true, value: '' } }))
   }
 
   return (
