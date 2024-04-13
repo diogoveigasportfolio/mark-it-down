@@ -56,11 +56,11 @@ export default function Folders({
   const coords = usePointerPos()
 
   useKeydown('F2', handleItemRename)
-  useKeydown('Delete', () => console.log('Delete pressed'))
+  useKeydown('Delete', () => setDeleteModalIsOpen(true))
 
   const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
 
-  const anyIsSelected = currentlySelected.item
+  const anyIsSelected = currentlySelected.item !== undefined
   const folderIsSelected = currentlySelected.isFolder
   const fileIsSelected = !currentlySelected.isFolder && currentlySelected.item
 
