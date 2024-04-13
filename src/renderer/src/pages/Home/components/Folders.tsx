@@ -16,6 +16,7 @@ import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 import Toast from '@renderer/components/Popups/Toast'
 import { formatFileName, nameIsValid } from '@renderer/utils/naming'
+import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -102,7 +103,8 @@ export default function Folders({
       children: []
     }
 
-    setItems((prevItems) => [...prevItems, newFolder])
+    const updatedFolders = orderFoldersByName([...items, newFolder] as FolderType[])
+    setItems(updatedFolders)
 
     setCreationInput((prev) => ({ ...prev, folder: { isOpen: false, value: '' } }))
   }
@@ -171,7 +173,7 @@ export default function Folders({
           return {
             ...folder,
             isOpen: true,
-            children: [...folder.children, newFile]
+            children: orderFilesByName([...folder.children, newFile])
           }
         }
         return folder
