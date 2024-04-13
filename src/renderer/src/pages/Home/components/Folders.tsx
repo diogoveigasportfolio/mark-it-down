@@ -10,13 +10,14 @@ import {
 } from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
+import useKeydown from '../hooks/useKeydown'
+import { formatFileName, nameIsValid } from '@renderer/utils/naming'
+import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
 import Toast from '@renderer/components/Popups/Toast'
-import { formatFileName, nameIsValid } from '@renderer/utils/naming'
-import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -53,6 +54,9 @@ export default function Folders({
   })
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
+
+  useKeydown("F2", () => console.log("F2 pressed"))
+  useKeydown("Delete", () => console.log("Delete pressed"))
 
   const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
 
