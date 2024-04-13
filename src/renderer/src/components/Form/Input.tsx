@@ -10,6 +10,7 @@ export default function Input({ onBlur, onChange, value }: InputProps) {
       type="text"
       onBlur={onBlur}
       autoFocus
+      onFocus={(e) => e.target.select()}
       onChange={onChange}
       className="bg-neutral-250 dark:bg-neutral-850 border-1 border-neutral-150 dark:border-neutral-750 text-neutral-900 dark:text-neutral-100 w-full"
       defaultValue={value}
