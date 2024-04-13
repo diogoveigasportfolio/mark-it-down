@@ -11,7 +11,7 @@ import {
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
 import useKeydown from '../hooks/useKeydown'
-import { formatFileName, nameIsValid } from '@renderer/utils/naming'
+import { formatFileName, formatFolderName, nameIsValid } from '@renderer/utils/naming'
 import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
@@ -55,8 +55,8 @@ export default function Folders({
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
-  useKeydown("F2", handleItemRename)
-  useKeydown("Delete", () => console.log("Delete pressed"))
+  useKeydown('F2', handleItemRename)
+  useKeydown('Delete', () => console.log('Delete pressed'))
 
   const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
 
@@ -92,10 +92,12 @@ export default function Folders({
   function handleFolderSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    const name = creationInput.folder.value
+    let name = ''
 
-    if(!nameIsValid(name)){
-      showErrorToast("Couldn't create folder", 'Folder name is invalid')
+    try {
+      name = formatFolderName(creationInput.folder.value)
+    } catch (error) {
+      showErrorToast("Couldn't create folder", (error as Error).message)
       return
     }
 
@@ -192,10 +194,12 @@ export default function Folders({
   function handleFolderRename(e: React.FormEvent<HTMLFormElement>, id: string) {
     e.preventDefault()
 
-    const name = renameInput.folder.value
+    let name = ''
 
-    if(!nameIsValid(name)){
-      showErrorToast("Couldn't rename folder", 'Folder name is invalid')
+    try {
+      name = formatFolderName(creationInput.folder.value)
+    } catch (error) {
+      showErrorToast("Couldn't create folder", (error as Error).message)
       return
     }
 
@@ -274,10 +278,19 @@ export default function Folders({
     })
   }
 
-  function handleItemRename(){
-    const renameItemType = folderIsSelected ? "folder" : "file"
+  function handleItemRename() {
+    const renameItemType = folderIsSelected ? 'folder' : 'file'
 
     setRenameInput((prev) => ({ ...prev, [renameItemType]: { isOpen: true, value: '' } }))
+  }
+
+  function handleDeselectAll() {
+    handleToggleSelect('')
+    setRenameInput((prev) => ({
+      ...prev,
+      file: { isOpen: false, value: '' },
+      folder: { isOpen: false, value: '' }
+    }))
   }
 
   return (
@@ -319,8 +332,8 @@ export default function Folders({
             ))}
             <div
               className="w-full h-screen"
-              onClick={() => handleToggleSelect('')}
-              onAuxClick={() => handleToggleSelect('')}
+              onClick={handleDeselectAll}
+              onAuxClick={handleDeselectAll}
             />
           </div>
         </div>

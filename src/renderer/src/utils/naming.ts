@@ -8,8 +8,31 @@
  *
  */
 
+function validCharacterLimits(name: string) {
+  if (name.length > 30) {
+    throw new Error('Chosen name is too long')
+  }
+}
+
 export function nameIsValid(name: string): boolean {
+  validCharacterLimits(name)
   return /^[a-zA-Z0-9\s._-]+(\.[a-zA-Z0-9\s._-]+)?$/.test(name.trim())
+}
+
+export function formatFolderName(name: string): string {
+  let isValid = false
+
+  try {
+    isValid = nameIsValid(name)
+  } catch (error) {
+    throw new Error((error as Error).message)
+  }
+  
+  if (!isValid) {
+    throw new Error('Folder name is invalid')
+  }
+  
+  return name.trim()
 }
 
 export function formatFileName(name: string): string {
