@@ -4,7 +4,8 @@ import Split from 'react-split'
 import { useState } from 'react'
 
 import '@/assets/styles/split.css'
-import useSideBarSizes from '../../hooks/useSideBarSizes'
+import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
+import useLocalStorage from '@renderer/hooks/useLocalStorage'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
@@ -20,7 +21,7 @@ function Home() {
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  const [items, setItems] = useState<ExplorerItemType[]>([...baseExplorerData, ...explorerData])
+  const {value: items, setValue: setItems} = useLocalStorage<ExplorerItemType[]>("notes", [...baseExplorerData, ...explorerData])
   // const [items, setItems] = useState([...baseExplorerData])
 
   function findSelectedExplorerItem(items: ExplorerItemType[]): {
