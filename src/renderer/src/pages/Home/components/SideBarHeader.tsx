@@ -34,7 +34,7 @@ export default function SideBarHeader({
 
   function openFileInput() {
     // Open file input only if a folder is selected
-    if (selectedItem.item)
+    if (selectedItem.isFolder)
       setCreationInput((prev) => ({ ...prev, file: { isOpen: true, value: '' } }))
   }
 
