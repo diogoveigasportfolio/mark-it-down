@@ -57,7 +57,7 @@ function Home() {
   function formatFilePath(): string {
     const divider = ' > '
 
-    if(!anySelected) return 'Click in a file to open it'
+    if(!anySelected) return 'Click in a file to open it...'
 
     const path = selectedItem.isFolder
       ? selectedItem.item?.name
