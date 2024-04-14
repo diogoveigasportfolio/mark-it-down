@@ -197,7 +197,7 @@ export default function Folders({
     let name = ''
 
     try {
-      name = formatFolderName(creationInput.folder.value)
+      name = formatFolderName(renameInput.folder.value)
     } catch (error) {
       showErrorToast("Couldn't create folder", (error as Error).message)
       return

@@ -8,15 +8,26 @@
  *
  */
 
-function validCharacterLimits(name: string) {
+function validCharacterLimits(name: string): string {
   if (name.length > 30) {
     throw new Error('Chosen name is too long')
   }
+
+  if (name.length === 3) {
+    throw new Error('Chosen name is too small')
+  }
+
+  return name.trim()
 }
 
 export function nameIsValid(name: string): boolean {
-  validCharacterLimits(name)
-  return /^[a-zA-Z0-9\s._-]+(\.[a-zA-Z0-9\s._-]+)?$/.test(name.trim())
+  const trimmedName = validCharacterLimits(name)
+
+  const folderNameRegExp = /^[^\\/:*?"<>|]+$/
+
+  const isValidFolderName = folderNameRegExp.test(trimmedName);
+
+  return isValidFolderName;
 }
 
 export function formatFolderName(name: string): string {
