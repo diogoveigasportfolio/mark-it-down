@@ -10,9 +10,7 @@ import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
 
-import SideBarHeader from './components/SideBarHeader'
-import Folders from './components/Folders'
-import Settings from './components/Settings'
+import {SideBarHeader, Folders, Settings, MarkdownEditor} from './components'
 
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -104,9 +102,12 @@ function Home() {
             <Settings />
           </div>
           {/* Main content */}
-          <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto">
+          <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto flex flex-col overflow-hidden">
             <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
               <p className="text-lg text-neutral-900 dark:text-neutral-100">{formatFilePath()}</p>
+            </div>
+            <div className="grow overflow-clip">
+              <MarkdownEditor />
             </div>
           </div>
         </Split>

@@ -15,7 +15,7 @@ type SideBarHeaderProps = {
   setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
 }
 
-export default function SideBarHeader({
+export function SideBarHeader({
   setCreationInput,
   selectedItem,
   setItems,

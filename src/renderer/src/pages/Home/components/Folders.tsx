@@ -30,7 +30,7 @@ type FoldersProps = {
   selectedItem: SelectedItemType
 }
 
-export default function Folders({
+export function Folders({
   items,
   setItems,
   menuOpen,
