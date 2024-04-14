@@ -5,29 +5,21 @@ import {
   HiEllipsisHorizontal
 } from 'react-icons/hi2'
 
-import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
+import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
 
 import IconButton from '@/components/IconButton'
-import { useMemo } from 'react'
 
 type SideBarHeaderProps = {
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
-  findSelectedExplorerItem: (items: ExplorerItemType[]) => {
-    item: ExplorerItemType | undefined
-    isFolder: boolean
-  }
+  selectedItem: SelectedItemType
   setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
-  items: ExplorerItemType[]
 }
 
 export default function SideBarHeader({
   setCreationInput,
-  findSelectedExplorerItem,
+  selectedItem,
   setItems,
-  items
 }: SideBarHeaderProps) {
-  const selectedItem = useMemo(() => findSelectedExplorerItem(items), [items])
-
   function openFolderInput() {
     setCreationInput((prev) => ({ ...prev, folder: { isOpen: true, value: '' } }))
   }

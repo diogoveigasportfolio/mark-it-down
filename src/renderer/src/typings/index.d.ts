@@ -33,3 +33,9 @@ export type ToastState = {
   message: string
   type: 'success' | 'warning' | 'error'
 }
+
+export type SelectedItemType = {
+  item: ExplorerItemType | undefined
+  isFolder: boolean
+  parentName: string | undefined
+}

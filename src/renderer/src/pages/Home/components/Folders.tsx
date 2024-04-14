@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 
 import {
@@ -6,12 +6,13 @@ import {
   ExplorerItemType,
   FileType,
   FolderType,
+  SelectedItemType,
   ToastState
 } from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
 import useKeydown from '../hooks/useKeydown'
-import { formatFileName, formatFolderName, nameIsValid } from '@renderer/utils/naming'
+import { formatFileName, formatFolderName } from '@renderer/utils/naming'
 import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
@@ -26,10 +27,7 @@ type FoldersProps = {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   creationInput: ExplorerInputType
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
-  findSelectedExplorerItem: (items: ExplorerItemType[]) => {
-    item: ExplorerItemType | undefined
-    isFolder: boolean
-  }
+  selectedItem: SelectedItemType
 }
 
 export default function Folders({
@@ -39,7 +37,7 @@ export default function Folders({
   setMenuOpen,
   creationInput,
   setCreationInput,
-  findSelectedExplorerItem
+  selectedItem
 }: FoldersProps) {
   const [renameInput, setRenameInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
@@ -58,11 +56,9 @@ export default function Folders({
   useKeydown('F2', handleItemRename)
   useKeydown('Delete', () => setDeleteModalIsOpen(true))
 
-  const currentlySelected = useMemo(() => findSelectedExplorerItem(items), [items])
-
-  const anyIsSelected = currentlySelected.item !== undefined
-  const folderIsSelected = currentlySelected.isFolder
-  const fileIsSelected = !currentlySelected.isFolder && currentlySelected.item
+  const anyIsSelected = selectedItem.item !== undefined
+  const folderIsSelected = selectedItem.isFolder
+  const fileIsSelected = !selectedItem.isFolder && selectedItem.item
 
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
@@ -171,7 +167,7 @@ export default function Folders({
       isFavorite: false
     }
 
-    const folderId = currentlySelected?.item?.id
+    const folderId = selectedItem?.item?.id
 
     setItems((prevItems) => {
       return prevItems.map((folder) => {
