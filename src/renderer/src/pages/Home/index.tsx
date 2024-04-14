@@ -107,7 +107,7 @@ function Home() {
               <p className="text-lg text-neutral-900 dark:text-neutral-100">{formatFilePath()}</p>
             </div>
             <div className="grow overflow-clip">
-              <MarkdownEditor />
+              <MarkdownEditor selectedItem={selectedItem} setItems={setItems} />
             </div>
           </div>
         </Split>
