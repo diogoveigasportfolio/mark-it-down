@@ -2,30 +2,22 @@ import { SideBarSizesType } from '@renderer/typings'
 import useLocalStorage from './useLocalStorage'
 
 export default function useSideBarSizes() {
+  const {value: sideBarIsOpen, setValue: setSideBarIsOpen} = useLocalStorage<boolean>('sideBarIsOpen', true)
   const { value: sideBarSizes, setValue: setSideBarSizes } = useLocalStorage<SideBarSizesType>(
     'sideBarSizes',
     {
-      sizes: [20, 80],
+      sizes: [25, 75],
       gutterSize: 10
     }
   )
 
   function toggleSideBar() {
-    if (sideBarSizes.sizes[0] <= 5)
-      setSideBarSizes({
-        sizes: [20, 80],
-        gutterSize: 10
-      })
-    else
-      setSideBarSizes({
-        sizes: [0, 100],
-        gutterSize: 0
-      })
+    setSideBarIsOpen(prev => !prev)
   }
 
   function onDragEnd(sizes: number[]) {
     setSideBarSizes((prev) => ({ ...prev, sizes }))
   }
 
-  return { sideBarSizes, setSideBarSizes, toggleSideBar, onDragEnd }
+  return { sideBarSizes, sideBarIsOpen, toggleSideBar, onDragEnd }
 }

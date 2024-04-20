@@ -1,6 +1,5 @@
 // https://react-icons.github.io/react-icons/icons/hi2/
 import { HiBars3 } from 'react-icons/hi2'
-import Split from 'react-split'
 import { useMemo, useState } from 'react'
 
 import '@/assets/styles/split.css'
@@ -10,10 +9,17 @@ import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
 
-import { SideBarHeader, Folders, Settings, MarkdownEditor, FilePath } from './components'
+import {
+  SideBarHeader,
+  Folders,
+  Settings,
+  MarkdownEditor,
+  FilePath,
+  SplitManager
+} from './components'
 
 function Home() {
-  const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
+  const { sideBarSizes, sideBarIsOpen, toggleSideBar, onDragEnd } = useSideBarSizes()
   const [menuOpen, setMenuOpen] = useState(false)
   const [creationInput, setCreationInput] = useState<ExplorerInputType>({
     file: { isOpen: false, value: '' },
@@ -59,17 +65,10 @@ function Home() {
         <button className="group absolute top-2 left-2" onClick={() => toggleSideBar()}>
           <HiBars3 className="size-12 text-neutral-500 dark:text-neutral-500 group-hover:text-neutral-800 group-hover:dark:text-neutral-300" />
         </button>
-        <Split
-          sizes={sideBarSizes.sizes}
-          minSize={0}
-          maxSize={[450]}
-          direction="horizontal"
-          cursor="col-resize"
-          dragInterval={1}
-          gutterSize={sideBarSizes.gutterSize}
-          gutterAlign="center"
-          className="flex h-full bg-neutral-250 dark:bg-neutral-900"
+        <SplitManager
           onDragEnd={onDragEnd}
+          sideBarSizes={sideBarSizes}
+          sideBarIsOpen={sideBarIsOpen}
         >
           {/* Side bar */}
           <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
@@ -98,7 +97,7 @@ function Home() {
               <MarkdownEditor selectedItem={selectedItem} setItems={setItems} />
             </div>
           </div>
-        </Split>
+        </SplitManager>
       </div>
     </>
   )
