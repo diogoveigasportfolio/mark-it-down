@@ -10,7 +10,7 @@ import {
   thematicBreakPlugin
 } from '@mdxeditor/editor'
 
-import { ExplorerItemType, FileType, FolderType, SelectedItemType } from '@renderer/typings'
+import { ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
 
 type MarkdownEditorProps = {
   selectedItem: SelectedItemType | undefined
