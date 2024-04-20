@@ -1,5 +1,6 @@
 import Split from 'react-split'
 
+import '@/assets/styles/split.css'
 import { SideBarSizesType } from '@renderer/typings'
 
 type SplitManagerProps = {

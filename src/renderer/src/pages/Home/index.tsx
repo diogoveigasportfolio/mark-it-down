@@ -2,7 +2,6 @@
 import { HiBars3 } from 'react-icons/hi2'
 import { useMemo, useState } from 'react'
 
-import '@/assets/styles/split.css'
 import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
