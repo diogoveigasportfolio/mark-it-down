@@ -10,7 +10,7 @@ import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
 
-import {SideBarHeader, Folders, Settings, MarkdownEditor} from './components'
+import { SideBarHeader, Folders, Settings, MarkdownEditor, FilePath } from './components'
 
 function Home() {
   const { sideBarSizes, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -50,18 +50,6 @@ function Home() {
     })
 
     return response
-  }
-
-  function formatFilePath(): string {
-    const divider = ' > '
-
-    if(!anySelected) return 'Click in a file to open it...'
-
-    const path = selectedItem.isFolder
-      ? selectedItem.item?.name
-      : selectedItem.parentName + divider + selectedItem.item?.name
-
-    return path as string
   }
 
   return (
@@ -104,7 +92,7 @@ function Home() {
           {/* Main content */}
           <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto flex flex-col overflow-hidden">
             <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
-              <p className="text-lg text-neutral-900 dark:text-neutral-100">{formatFilePath()}</p>
+              <FilePath anySelected={anySelected} selectedItem={selectedItem} />
             </div>
             <div className="grow overflow-clip">
               <MarkdownEditor selectedItem={selectedItem} setItems={setItems} />
