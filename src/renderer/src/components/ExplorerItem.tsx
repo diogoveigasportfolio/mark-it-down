@@ -101,8 +101,8 @@ function ExplorerItem({
           onAuxClick={handleRightClick}
         >
           {isFolder ? (
-            <HiOutlineChevronRight
-              className={`size-6 transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
+            <HiOutlineChevronRight strokeWidth={4}
+              className={`transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
             />
           ) : 
             <span>📄</span>
