@@ -64,3 +64,12 @@ export function formatFileName(name: string): string {
 
   return name + pathEnd
 }
+
+export function formatDuplicateFileName(name: string): string{
+  const parts = name.split('.')
+  if (parts.length === 1) {
+    return `${name}-copy.md`
+  }
+
+  return `${parts[0]}-copy.${parts[1]}`
+}

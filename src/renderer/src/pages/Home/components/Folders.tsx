@@ -11,8 +11,8 @@ import {
 } from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
-import useKeydown from '../hooks/useKeydown'
-import { formatFileName, formatFolderName } from '@renderer/utils/naming'
+// import useKeydown from '../hooks/useKeydown'
+import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
 import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
@@ -289,6 +289,38 @@ export function Folders({
     }))
   }
 
+  function handleFileDuplication() {
+    if (!selectedItem.item) return
+
+    const duplicatedFile = {
+      ...selectedItem.item,
+      id: nanoid(),
+      name: formatDuplicateFileName(selectedItem.item.name)
+    } as FileType
+
+    // console.log('duplicatedFile: ', duplicatedFile)
+    // console.log('original file: ', selectedItem.item)
+
+    setItems((prevItems) => {
+      return prevItems.map((folder) => {
+        if (folder.id === selectedItem.parentId && 'children' in folder) {
+          const children = folder.children.map((file) => {
+            if (file.id === selectedItem.item?.id) {
+              return { ...file, isSelected: false }
+            }
+            return file
+          })
+          return {
+            ...folder,
+            isOpen: true,
+            children: orderFilesByName([...children, duplicatedFile as FileType])
+          }
+        }
+        return folder
+      })
+    })
+  }
+
   return (
     <>
       {toast.isOpen && (
@@ -381,6 +413,7 @@ export function Folders({
               }
             />
             <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
+            <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
           </>
         )}
       </MenuOptions>

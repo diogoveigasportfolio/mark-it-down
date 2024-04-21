@@ -43,13 +43,14 @@ function Home() {
       return { item: foundItem, isFolder: 'children' in foundItem, parentName: undefined }
     }
 
-    const response: SelectedItemType = { item: undefined, isFolder: false, parentName: undefined }
+    const response: SelectedItemType = { item: undefined, isFolder: false }
     items.forEach((item) => {
       if ('children' in item) {
         const result = findSelectedExplorerItem(item.children)
         if (result.item) {
           response.item = result.item
           response.parentName = item.name
+          response.parentId = item.id
         }
       }
     })

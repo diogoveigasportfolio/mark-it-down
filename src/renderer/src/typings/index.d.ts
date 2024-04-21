@@ -37,5 +37,6 @@ export type ToastState = {
 export type SelectedItemType = {
   item: ExplorerItemType | undefined
   isFolder: boolean
-  parentName: string | undefined
+  parentName?: string
+  parentId?: string
 }
