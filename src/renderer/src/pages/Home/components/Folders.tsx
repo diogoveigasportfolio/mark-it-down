@@ -53,8 +53,8 @@ export function Folders({
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
-  useKeydown('F2', handleItemRename)
-  useKeydown('Delete', () => setDeleteModalIsOpen(true))
+  // useKeydown('F2', handleItemRename)
+  // useKeydown('Delete', () => setDeleteModalIsOpen(true))
 
   const anyIsSelected = selectedItem.item !== undefined
   const folderIsSelected = selectedItem.isFolder
