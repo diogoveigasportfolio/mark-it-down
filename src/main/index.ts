@@ -35,6 +35,20 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  // Zoom on scroll
+  mainWindow.webContents.setZoomFactor(1.0)
+  mainWindow.webContents.setVisualZoomLevelLimits(1, 5)
+  mainWindow.webContents.on('zoom-changed', (_event, zoomDirection) => {
+    const currentZoom = mainWindow.webContents.getZoomFactor()
+
+    if (zoomDirection === 'in') {
+      mainWindow.webContents.zoomFactor = currentZoom + 0.2
+    }
+    if (zoomDirection === 'out') {
+      mainWindow.webContents.zoomFactor = currentZoom - 0.2
+    }
+  })
 }
 
 // This method will be called when Electron has finished
