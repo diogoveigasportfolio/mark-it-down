@@ -3,11 +3,17 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-function createWindow(): void {
+import { windowStateKeeper } from './utils'
+
+async function createWindow(): Promise<void> {
+  const mainWindowStateKeeper = await windowStateKeeper('main')
+
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
-    center: true,
+    x: mainWindowStateKeeper.x,
+    y: mainWindowStateKeeper.y,
+    width: mainWindowStateKeeper.width,
+    height: mainWindowStateKeeper.height,
+    fullscreen: mainWindowStateKeeper.isMaximized,
     show: false,
     title: 'Mark it down!',
     autoHideMenuBar: true,
@@ -18,6 +24,8 @@ function createWindow(): void {
       contextIsolation: true
     }
   })
+
+  mainWindowStateKeeper.track(mainWindow);
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
