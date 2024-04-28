@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 import useKeydown from '@renderer/hooks/useKeydown'
 import { ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
+import MarkdownLink from '@renderer/components/MarkdownLink'
 
 type MarkdownEditorProps = {
   selectedItem: SelectedItemType | undefined
@@ -43,7 +44,21 @@ export function MarkdownEditor({ selectedItem, setItems }: MarkdownEditorProps) 
     <div className="mx-auto cursor-text" onDoubleClick={() => setIsEditing(true)}>
       {!isEditing && (
         <div className="overflow-auto outline-none h-screen px-12 py-8 lg:px-24 prose prose-neutral dark:prose-invert prose-lg prose-p:my-3 prose-p:leading-relaxed prose-headings:my-4 prose-blockquote:my-4 prose-ul:my-2 prose-li:my-0 prose-code:px-1 prose-code:text-red-500 prose-code:before:content-[''] prose-code:after:content-[''] select-text">
-          <Markdown remarkPlugins={[remarkGfm]}>{markdown}</Markdown>
+          <Markdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              // @ts-ignore - did not find type definition for props at docs
+              a(props: { href: string; children: React.ReactNode }) {
+                const { href, children } = props
+
+                if (!children) return null
+
+                return <MarkdownLink href={href}>{children}</MarkdownLink>
+              }
+            }}
+          >
+            {markdown}
+          </Markdown>
         </div>
       )}
       {isEditing && (
