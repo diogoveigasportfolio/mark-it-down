@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm'
 import useKeydown from '@renderer/hooks/useKeydown'
 import { ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
 import MarkdownLink from '@renderer/components/MarkdownLink'
+import Checkbox from '@renderer/components/Form/Checkbox'
 
 type MarkdownEditorProps = {
   selectedItem: SelectedItemType | undefined
@@ -54,6 +55,14 @@ export function MarkdownEditor({ selectedItem, setItems }: MarkdownEditorProps) 
                 if (!children) return null
 
                 return <MarkdownLink href={href}>{children}</MarkdownLink>
+              },
+              // @ts-ignore - did not find type definition for props at docs
+              input(props: { checked: boolean; type: string }) {
+                const {type, checked} = props
+
+                if (type === 'checkbox') {
+                  return <Checkbox checked={checked} />
+                }
               }
             }}
           >
