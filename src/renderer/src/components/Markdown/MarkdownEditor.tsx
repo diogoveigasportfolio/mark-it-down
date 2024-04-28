@@ -4,19 +4,18 @@ import remarkGfm from 'remark-gfm'
 
 import useKeydown from '@renderer/hooks/useKeydown'
 import { ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
-import MarkdownLink from '@renderer/components/MarkdownLink'
+import MarkdownLink from '@renderer/components/Markdown/MarkdownLink'
 import Checkbox from '@renderer/components/Form/Checkbox'
 
 type MarkdownEditorProps = {
   selectedItem: SelectedItemType | undefined
   setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
+  isEditing: boolean
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function MarkdownEditor({ selectedItem, setItems }: MarkdownEditorProps) {
-  const [isEditing, setIsEditing] = useState(false)
-
+export function MarkdownEditor({ selectedItem, setItems, isEditing, setIsEditing }: MarkdownEditorProps) {
   useKeydown('Escape', () => setIsEditing(false))
-  //useKeydown('Escape', () => setIsEditing(false))
 
   const item = selectedItem?.item
 

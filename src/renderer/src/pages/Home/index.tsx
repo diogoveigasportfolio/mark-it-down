@@ -16,6 +16,7 @@ import {
   FilePath,
   SplitManager
 } from './components'
+import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
 
 function Home() {
   const { sideBarSizes, sideBarIsOpen, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -28,7 +29,7 @@ function Home() {
     ...baseExplorerData,
     ...explorerData
   ])
-  // const [items, setItems] = useState([...baseExplorerData])
+  const [isEditingMarkdown, setIsEditingMarkdown] = useState(false)
 
   const selectedItem = useMemo(() => findSelectedExplorerItem(items), [items])
 
@@ -92,9 +93,18 @@ function Home() {
           <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto flex flex-col overflow-hidden">
             <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
               <FilePath anySelected={anySelected} selectedItem={selectedItem} />
+              <MarkdownModeSwitcher
+                isEditing={isEditingMarkdown}
+                setIsEditing={setIsEditingMarkdown}
+              />
             </div>
             <div className="grow overflow-clip">
-              <MarkdownEditor selectedItem={selectedItem} setItems={setItems} />
+              <MarkdownEditor
+                selectedItem={selectedItem}
+                setItems={setItems}
+                isEditing={isEditingMarkdown}
+                setIsEditing={setIsEditingMarkdown}
+              />
             </div>
           </div>
         </SplitManager>

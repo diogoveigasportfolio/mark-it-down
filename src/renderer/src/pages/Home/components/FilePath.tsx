@@ -21,13 +21,13 @@ export function FilePath({ anySelected, selectedItem }: FilePathProps) {
   path.push(selectedItem.item?.name as string)
 
   return (
-    <>
+    <section className="flex ml-auto">
       {path.map((item, index) => (
         <span className="flex items-center" key={item}>
           {index !== 0 && <HiMiniChevronRight className={`size-6 stroke-2 ${colorClasses}`} />}
           <span className={`text-lg ${colorClasses}`}>{item}</span>
         </span>
       ))}
-    </>
+    </section>
   )
 }

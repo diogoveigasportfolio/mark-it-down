@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import Toast from './Popups/Toast'
+import Toast from '../Popups/Toast'
 
 interface MarkdownLinkProps {
   children: React.ReactNode
