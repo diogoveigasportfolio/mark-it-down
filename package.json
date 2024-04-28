@@ -23,7 +23,6 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
-    "@mdxeditor/editor": "^2.20.2",
     "electron-settings": "^4.0.4",
     "fs-extra": "^11.2.0",
     "nanoid": "^5.0.6",
