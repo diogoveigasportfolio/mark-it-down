@@ -25,7 +25,7 @@ async function createWindow(): Promise<void> {
     }
   })
 
-  mainWindowStateKeeper.track(mainWindow);
+  mainWindowStateKeeper.track(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -49,11 +49,11 @@ async function createWindow(): Promise<void> {
   mainWindow.webContents.setVisualZoomLevelLimits(1, 5)
   mainWindow.webContents.on('zoom-changed', (_event, zoomDirection) => {
     const currentZoom = mainWindow.webContents.getZoomFactor()
-
+    
     if (zoomDirection === 'in') {
       mainWindow.webContents.zoomFactor = currentZoom + 0.2
     }
-    if (zoomDirection === 'out') {
+    if (zoomDirection === 'out' && currentZoom > 0.5) {
       mainWindow.webContents.zoomFactor = currentZoom - 0.2
     }
   })
