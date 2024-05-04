@@ -60,6 +60,8 @@ export function Folders({
   const folderIsSelected = selectedItem.isFolder
   const fileIsSelected = !selectedItem.isFolder && selectedItem.item
 
+  const favoriteOptionText = !(selectedItem?.item as FileType)?.isFavorite ? 'Mark as favorite ⭐' : 'Unmark as favorite ❌'
+
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
 
@@ -329,7 +331,7 @@ export function Folders({
         if (folder.id === selectedItem.parentId && 'children' in folder) {
           const children = folder.children.map((file) => {
             if (file.id === selectedItem.item?.id) {
-              return { ...file, isFavorite: true }
+              return { ...file, isFavorite: !file.isFavorite }
             }
             return file
           })
@@ -436,7 +438,7 @@ export function Folders({
             />
             <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
             <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
-            <MenuOption text="Mark as favorite ⭐" clickHandler={handleFavoriteFile} />
+            <MenuOption text={favoriteOptionText} clickHandler={handleFavoriteFile} />
           </>
         )}
       </MenuOptions>

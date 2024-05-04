@@ -2,6 +2,7 @@ import { HiOutlineChevronRight, HiStar } from 'react-icons/hi2'
 
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
+import { FAVORITE_FOLDER } from '@renderer/constants'
 
 import ExplorerInputForm from './Form/ExplorerInputForm'
 import Dialog from '@renderer/components/Popups/Dialog'
@@ -95,18 +96,24 @@ function ExplorerItem({
       {/* Explorer item */}
       {!currentIsRenaming && (
         <button
-          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? "pl-4" : "pl-12")} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
+          className={`w-full flex items-center gap-3 py-1 text-neutral-900 dark:text-neutral-300 ${cn(isFolder ? 'pl-4' : 'pl-12')} ${cn(item.isSelected ? 'bg-neutral-350 dark:bg-neutral-650' : '')}`}
           onClick={handleLeftClick}
           onAuxClick={handleRightClick}
         >
-          {isFolder ? (
-            <HiOutlineChevronRight strokeWidth={4}
-              className={`transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
-            />
-          ) : 
-            <span>📄</span>
-          }
+          {item.id !== FAVORITE_FOLDER && (
+            <>
+              {isFolder ? (
+                <HiOutlineChevronRight
+                  strokeWidth={4}
+                  className={`transition-[transform] duration-150 ${cn({ 'rotate-90': item.isOpen })}`}
+                />
+              ) : (
+                <span>📄</span>
+              )}
+            </>
+          )}
           <span className="text-lg text-nowrap flex item-center gap-2">
+            {item.id === FAVORITE_FOLDER && <HiStar className="size-6" />}
             {item.name}
           </span>
         </button>
@@ -133,7 +140,7 @@ function ExplorerItem({
 
       {/* [Children] */}
       {item.isOpen && isFolder && (
-        <section> 
+        <section>
           {item.children.map((child) => (
             <ExplorerItem
               key={child.id}
