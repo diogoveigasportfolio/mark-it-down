@@ -321,6 +321,28 @@ export function Folders({
     })
   }
 
+  function handleFavoriteFile(){
+    if (!selectedItem.item) return
+
+    setItems((prevItems) => {
+      return prevItems.map((folder) => {
+        if (folder.id === selectedItem.parentId && 'children' in folder) {
+          const children = folder.children.map((file) => {
+            if (file.id === selectedItem.item?.id) {
+              return { ...file, isFavorite: true }
+            }
+            return file
+          })
+          return {
+            ...folder,
+            children: children
+          }
+        }
+        return folder
+      })
+    })
+  }
+
   return (
     <>
       {toast.isOpen && (
@@ -414,6 +436,7 @@ export function Folders({
             />
             <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
             <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
+            <MenuOption text="Mark as favorite ⭐" clickHandler={handleFavoriteFile} />
           </>
         )}
       </MenuOptions>

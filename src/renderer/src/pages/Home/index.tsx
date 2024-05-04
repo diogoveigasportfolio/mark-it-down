@@ -4,9 +4,8 @@ import { useMemo, useState } from 'react'
 
 import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
-import { baseExplorerData } from '@renderer/data/baseExplorerData'
 import { explorerData } from '@renderer/data/explorerData'
-import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
+import { ExplorerInputType, ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
 
 import {
   SideBarHeader,
@@ -17,6 +16,7 @@ import {
   SplitManager
 } from './components'
 import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
+import { baseExplorerData } from '@renderer/data/baseExplorerData'
 
 function Home() {
   const { sideBarSizes, sideBarIsOpen, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -26,7 +26,6 @@ function Home() {
     folder: { isOpen: false, value: '' }
   })
   const { value: items, setValue: setItems } = useLocalStorage<ExplorerItemType[]>('notes', [
-    ...baseExplorerData,
     ...explorerData
   ])
   const [isEditingMarkdown, setIsEditingMarkdown] = useState(false)
@@ -59,6 +58,26 @@ function Home() {
     return response
   }
 
+  function getFavoriteItems(items: ExplorerItemType[]): FileType[] {
+    const favorites: FileType[] = []
+
+    items.forEach((item) => {
+      if ('children' in item) {
+        const children = item.children
+        children.forEach((child) => {
+          if (child.isFavorite) {
+            favorites.push(child)
+          }
+        })
+      }
+    })
+
+    return favorites
+  }
+
+  const favoriteFolder = baseExplorerData[0]
+  favoriteFolder.children = getFavoriteItems(items)
+
   return (
     <>
       {/* Page */}
@@ -79,7 +98,7 @@ function Home() {
               selectedItem={selectedItem}
             />
             <Folders
-              items={items}
+              items={[favoriteFolder, ...items]}
               setItems={setItems}
               menuOpen={menuOpen}
               setMenuOpen={setMenuOpen}

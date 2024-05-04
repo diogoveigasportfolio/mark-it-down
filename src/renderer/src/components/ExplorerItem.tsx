@@ -2,7 +2,6 @@ import { HiOutlineChevronRight, HiStar } from 'react-icons/hi2'
 
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 import { cn } from '@renderer/utils'
-import { FAVORITE_FOLDER } from '@renderer/constants'
 
 import ExplorerInputForm from './Form/ExplorerInputForm'
 import Dialog from '@renderer/components/Popups/Dialog'
@@ -108,7 +107,6 @@ function ExplorerItem({
             <span>📄</span>
           }
           <span className="text-lg text-nowrap flex item-center gap-2">
-            {item.id === FAVORITE_FOLDER && <HiStar className="size-6" />}
             {item.name}
           </span>
         </button>

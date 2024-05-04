@@ -10,7 +10,12 @@ type FilePathProps = {
 export function FilePath({ anySelected, selectedItem }: FilePathProps) {
   const colorClasses = 'text-neutral-900 dark:text-neutral-100'
 
-  if (!anySelected) return <p className={colorClasses}>Click in a file to open it...</p>
+  if (!anySelected)
+    return (
+      <section className="flex ml-auto">
+        <p className={colorClasses}>Click in a file to open it...</p>
+      </section>
+    )
 
   const path: string[] = []
 
