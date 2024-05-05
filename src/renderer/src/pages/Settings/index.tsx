@@ -4,7 +4,7 @@ function Settings() {
   return (
     <>
       <div>Settings</div>
-      <Link to="/aa">Go to Home</Link>
+      <Link to="/">Go to Home</Link>
     </>
   )
 }
