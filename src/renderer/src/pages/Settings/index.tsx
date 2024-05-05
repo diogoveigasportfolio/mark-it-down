@@ -1,9 +1,9 @@
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
 import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import { explorerData } from '@renderer/data/explorerData'
-import { ExplorerItemType, FileType } from '@renderer/typings'
+import { ExplorerItemType } from '@renderer/typings'
 
-import { Header, Sidebar } from './components'
+import { Footer, Header, Sidebar } from './components'
 import { SplitManager } from '../Home/components'
 
 function Settings() {
@@ -21,7 +21,7 @@ function Settings() {
           Content will be here...
         </section>
       </SplitManager>
-      
+      <Footer />
     </>
   )
 }
