@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex items-center justify-center gap-3 px-4">
+    <footer className="bg-neutral-150 dark:bg-neutral-800 min-h-16 flex items-center justify-center gap-3 px-4 absolute bottom-0 w-full">
       <div className="group relative cursor-pointer">
         <Link to="https://diogoveigas.netlify.app/">
           <span className="text-xl text-neutral-800 dark:text-neutral-150">Diogo Veigas</span>

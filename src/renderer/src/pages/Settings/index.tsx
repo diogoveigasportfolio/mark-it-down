@@ -13,14 +13,14 @@ function Settings() {
   ])
 
   return (
-    <>
+    <div className="h-full w-full overflow-y-hidden">
       <Header />
       <SplitManager onDragEnd={onDragEnd} sideBarSizes={sideBarSizes} sideBarIsOpen={sideBarIsOpen}>
         <Sidebar items={items} setItems={setItems} />
         <Content />
       </SplitManager>
       <Footer />
-    </>
+    </div>
   )
 }
 
