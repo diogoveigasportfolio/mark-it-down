@@ -1,5 +1,9 @@
 declare global {
   interface Window {
-    context: null
+    theme: {
+      dark: () => Promise<void>
+      light: () => Promise<void>
+      system: () => Promise<void>
+    }
   }
 }

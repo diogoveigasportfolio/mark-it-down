@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeTheme } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -26,6 +26,18 @@ async function createWindow(): Promise<void> {
   })
 
   mainWindowStateKeeper.track(mainWindow)
+
+  ipcMain.handle('theme:dark', () => {
+    nativeTheme.themeSource = 'dark'
+  })
+
+  ipcMain.handle('theme:light', () => {
+    nativeTheme.themeSource = 'light'
+  })
+
+  ipcMain.handle('theme:system', () => {
+    nativeTheme.themeSource = 'system'
+  })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
