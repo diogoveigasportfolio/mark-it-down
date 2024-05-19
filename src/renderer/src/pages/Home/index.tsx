@@ -91,7 +91,7 @@ function Home() {
           sideBarIsOpen={sideBarIsOpen}
         >
           {/* Side bar */}
-          <div className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
+          <aside className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
             <SideBarHeader
               setCreationInput={setCreationInput}
               setItems={setItems}
@@ -107,25 +107,25 @@ function Home() {
               selectedItem={selectedItem}
             />
             <Settings />
-          </div>
+          </aside>
           {/* Main content */}
-          <div className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto flex flex-col overflow-hidden">
-            <div className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
+          <section className="h-full bg-neutral-100 dark:bg-neutral-850 w-auto flex flex-col overflow-hidden">
+            <header className="bg-neutral-150 dark:bg-neutral-800 w-auto min-h-16 flex justify-center items-center">
               <FilePath anySelected={anySelected} selectedItem={selectedItem} />
               <MarkdownModeSwitcher
                 isEditing={isEditingMarkdown}
                 setIsEditing={setIsEditingMarkdown}
               />
-            </div>
-            <div className="grow overflow-clip">
+            </header>
+            <main className="grow overflow-clip">
               <MarkdownEditor
                 selectedItem={selectedItem}
                 setItems={setItems}
                 isEditing={isEditingMarkdown}
                 setIsEditing={setIsEditingMarkdown}
               />
-            </div>
-          </div>
+            </main>
+          </section>
         </SplitManager>
       </div>
     </>
