@@ -10,7 +10,7 @@ type SplitManagerProps = {
   children: React.ReactNode
 }
 
-export function SplitManager({
+export default function SplitManager({
   onDragEnd,
   sideBarSizes,
   sideBarIsOpen,

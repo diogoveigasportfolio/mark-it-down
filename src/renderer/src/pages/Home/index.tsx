@@ -13,9 +13,9 @@ import {
   Settings,
   MarkdownEditor,
   FilePath,
-  SplitManager
 } from './components'
 import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
+import SplitManager from '@renderer/components/SplitManager'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
 
 function Home() {
