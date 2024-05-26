@@ -1,6 +1,5 @@
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
 import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
-import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerItemType } from '@renderer/typings'
 
 import { Footer, Header, Sidebar, Content } from './components'
@@ -8,9 +7,7 @@ import SplitManager from '@renderer/components/SplitManager'
 
 function Settings() {
   const { sideBarSizes, sideBarIsOpen, onDragEnd } = useSideBarSizes()
-  const { value: items, setValue: setItems } = useLocalStorage<ExplorerItemType[]>('notes', [
-    ...explorerData
-  ])
+  const { value: items, setValue: setItems } = useLocalStorage<ExplorerItemType[]>('notes')
 
   return (
     <div className="h-full w-full overflow-y-hidden">

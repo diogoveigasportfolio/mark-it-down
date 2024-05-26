@@ -7,13 +7,7 @@ import useLocalStorage from '@renderer/hooks/useLocalStorage'
 import { explorerData } from '@renderer/data/explorerData'
 import { ExplorerInputType, ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
 
-import {
-  SideBarHeader,
-  Folders,
-  Settings,
-  MarkdownEditor,
-  FilePath,
-} from './components'
+import { SideBarHeader, Folders, Settings, MarkdownEditor, FilePath } from './components'
 import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
 import SplitManager from '@renderer/components/SplitManager'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
@@ -25,9 +19,7 @@ function Home() {
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  const { value: items, setValue: setItems } = useLocalStorage<ExplorerItemType[]>('notes', [
-    ...explorerData
-  ])
+  const { value: items, setValue: setItems } = useLocalStorage<ExplorerItemType[]>('notes')
   const [isEditingMarkdown, setIsEditingMarkdown] = useState(false)
 
   const selectedItem = useMemo(() => findSelectedExplorerItem(items), [items])

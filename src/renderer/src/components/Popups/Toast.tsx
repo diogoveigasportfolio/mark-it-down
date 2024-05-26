@@ -1,11 +1,12 @@
 import { HiMiniXMark } from 'react-icons/hi2'
 
 import IconButton from '../IconButton'
+import { ToastType } from '@renderer/typings'
 
 type ToastProps = {
   title: string
   children: React.ReactNode
-  type?: 'success' | 'warning' | 'error'
+  type?: ToastType
   onClose: () => void
 }
 

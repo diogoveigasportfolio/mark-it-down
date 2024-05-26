@@ -40,3 +40,5 @@ export type SelectedItemType = {
   parentName?: string
   parentId?: string
 }
+
+export type ToastType = 'success' | 'warning' | 'error'
