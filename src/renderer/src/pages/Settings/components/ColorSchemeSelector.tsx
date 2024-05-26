@@ -17,12 +17,23 @@ const theme = [
 
 export function ColorSchemeSelector() {
   const colorShemeSelectId = useId()
-  const [selectedColorScheme, setSelectedColorScheme] = useState<string>('system')
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [selectedColorScheme, setSelectedColorScheme] = useState<string>('')
 
   useEffect(() => {
     // @ts-ignore - window.theme is defined in the preload script
+    window.theme.get().then((theme: string) => {
+      setSelectedColorScheme(theme)
+      setIsLoading(false)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (isLoading) return
+
+    // @ts-ignore - window.theme is defined in the preload script
     window.theme[selectedColorScheme]()
-  }, [selectedColorScheme])
+  }, [selectedColorScheme, isLoading])
 
   const options = theme.map((o) => {
     return (

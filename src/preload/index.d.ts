@@ -4,6 +4,7 @@ declare global {
       dark: () => Promise<void>
       light: () => Promise<void>
       system: () => Promise<void>
+      get: () => Promise<void>
     }
   }
 }

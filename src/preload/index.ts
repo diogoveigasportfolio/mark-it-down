@@ -7,7 +7,8 @@ if (!process.contextIsolated) {
 const theme = {
   dark: () => ipcRenderer.invoke('theme:dark'),
   light: () => ipcRenderer.invoke('theme:light'),
-  system: () => ipcRenderer.invoke('theme:system')
+  system: () => ipcRenderer.invoke('theme:system'),
+  get: () => ipcRenderer.invoke('theme:get')
 }
 
 try {

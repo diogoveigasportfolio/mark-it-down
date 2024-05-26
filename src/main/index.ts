@@ -1,9 +1,9 @@
-import { app, shell, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-import { windowStateKeeper } from './utils'
+import { windowStateKeeper, setTheme, getTheme, initializeTheme } from './utils'
 
 async function createWindow(): Promise<void> {
   const mainWindowStateKeeper = await windowStateKeeper('main')
@@ -27,16 +27,22 @@ async function createWindow(): Promise<void> {
 
   mainWindowStateKeeper.track(mainWindow)
 
+  initializeTheme()
+
+  ipcMain.handle('theme:get', async () => {
+    return await getTheme()
+  })
+
   ipcMain.handle('theme:dark', () => {
-    nativeTheme.themeSource = 'dark'
+    setTheme('dark')
   })
 
   ipcMain.handle('theme:light', () => {
-    nativeTheme.themeSource = 'light'
+    setTheme('light')
   })
 
   ipcMain.handle('theme:system', () => {
-    nativeTheme.themeSource = 'system'
+    setTheme('system')
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -61,7 +67,7 @@ async function createWindow(): Promise<void> {
   mainWindow.webContents.setVisualZoomLevelLimits(1, 5)
   mainWindow.webContents.on('zoom-changed', (_event, zoomDirection) => {
     const currentZoom = mainWindow.webContents.getZoomFactor()
-    
+
     if (zoomDirection === 'in') {
       mainWindow.webContents.zoomFactor = currentZoom + 0.2
     }
