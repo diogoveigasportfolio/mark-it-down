@@ -75,7 +75,7 @@ export function MarkdownEditor({ selectedItem, setItems, isEditing, setIsEditing
             onBlur={() => setIsEditing(false)}
             autoFocus
             onChange={(e) => handleChange(e.target.value)}
-            className="mx-auto overflow-auto outline-none h-screen w-full caret-blue-500 text-neutral-800 dark:text-neutral-200 bg-transparent border-none px-12 py-8 lg:px-24 text-xl pb-32"
+            className="mx-auto overflow-auto outline-none h-screen w-full caret-blue-500 text-neutral-800 dark:text-neutral-200 bg-transparent border-none px-12 py-8 lg:px-24 text-xl pb-32 font-mono"
           />
         </div>
       )}
