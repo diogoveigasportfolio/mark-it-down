@@ -107,6 +107,7 @@ export function Folders({
       children: []
     }
 
+    console.log(items)
     const updatedFolders = orderFoldersByName([...items, newFolder] as FolderType[])
     setItems(updatedFolders)
 

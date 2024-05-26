@@ -10,11 +10,11 @@
 import { FileType, FolderType } from "@renderer/typings"
 
 export function orderFoldersByName(items: FolderType[]): FolderType[] {
-  const favorite = items[0];
+  // const favorite = items[0];
   
   const otherFolders = items.slice(1).sort((a, b) => a.name.localeCompare(b.name));
 
-  return [favorite, ...otherFolders];
+  return [...otherFolders];
 }
 
 export function orderFilesByName(items: FileType[]): FileType[] {
