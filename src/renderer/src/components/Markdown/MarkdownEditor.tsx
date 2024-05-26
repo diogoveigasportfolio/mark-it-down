@@ -13,7 +13,12 @@ type MarkdownEditorProps = {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function MarkdownEditor({ selectedItem, setItems, isEditing, setIsEditing }: MarkdownEditorProps) {
+export function MarkdownEditor({
+  selectedItem,
+  setItems,
+  isEditing,
+  setIsEditing
+}: MarkdownEditorProps) {
   useKeydown('Escape', () => setIsEditing(false))
 
   const item = selectedItem?.item
@@ -56,7 +61,7 @@ export function MarkdownEditor({ selectedItem, setItems, isEditing, setIsEditing
               },
               // @ts-ignore - did not find type definition for props at docs
               input(props: { checked: boolean; type: string }) {
-                const {type, checked} = props
+                const { type, checked } = props
 
                 if (type === 'checkbox') {
                   return <Checkbox checked={checked} />
@@ -69,13 +74,14 @@ export function MarkdownEditor({ selectedItem, setItems, isEditing, setIsEditing
         </div>
       )}
       {isEditing && (
-        <div>
+        <div className="mx-auto max-w-screen-lg">
           <textarea
             value={markdown}
             onBlur={() => setIsEditing(false)}
             autoFocus
             onChange={(e) => handleChange(e.target.value)}
-            className="mx-auto overflow-auto outline-none h-screen w-full caret-blue-500 text-neutral-800 dark:text-neutral-200 bg-transparent border-none px-12 py-8 lg:px-24 text-xl pb-32 font-mono"
+            className="form-textarea mx-auto overflow-auto border-none focus:border-none focus:outline-none outline-none h-screen w-full caret-blue-600 text-neutral-800 dark:text-neutral-200 bg-transparent px-12 py-8 lg:px-24 text-xl pb-32 font-mono"
+            style={{ boxShadow: 'none' }}
           />
         </div>
       )}
