@@ -14,7 +14,7 @@ function Settings() {
       <Header />
       <SplitManager onDragEnd={onDragEnd} sideBarSizes={sideBarSizes} sideBarIsOpen={sideBarIsOpen}>
         <Sidebar items={items} setItems={setItems} />
-        <Content />
+        <Content items={items} setItems={setItems} />
       </SplitManager>
       <Footer />
     </div>

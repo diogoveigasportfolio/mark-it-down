@@ -1,14 +1,19 @@
 import { useState } from 'react'
 
 import { ColorSchemeSelector, SettingPair } from './'
-import { ToastType as ToastTypeType } from '@renderer/typings'
+import { ExplorerItemType, ToastType as ToastTypeType } from '@renderer/typings'
 import Dialog from '@renderer/components/Popups/Dialog'
 import Toast from '@renderer/components/Popups/Toast'
 
 type DialogType = { isOpen: boolean; title: string; message: string; onClick: () => void }
 type ToastType = { isOpen: boolean; title: string; message: string; type: ToastTypeType }
 
-export function Content() {
+type ContentProps = {
+  items: ExplorerItemType[]
+  setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
+}
+
+export function Content({ setItems }: ContentProps) {
   const [dialog, setDialog] = useState<DialogType>({
     isOpen: false,
     title: '',
@@ -60,7 +65,7 @@ export function Content() {
 
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
-  
+
     link.href = url
     link.setAttribute('download', 'notes.json')
 
@@ -68,6 +73,8 @@ export function Content() {
     link.click()
     link.remove()
   }
+
+  const importLocalData = () => {}
 
   return (
     <>
@@ -89,7 +96,12 @@ export function Content() {
           onClick={clearLocalDataHandler}
         />
         <SettingPair text="Export data" buttonText="Export" onClick={exportLocalData} />
-        <SettingPair text="Import data" buttonText="Import" onClick={() => {}} />
+        <SettingPair
+          text="Import data"
+          buttonText="Import"
+          isFile={true}
+          onClick={importLocalData}
+        />
         <SettingPair text="Download markdown file" buttonText="Download" onClick={() => {}} />
       </main>
     </>
