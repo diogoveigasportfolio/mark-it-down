@@ -54,6 +54,21 @@ export function Content() {
     )
   }
 
+  const exportLocalData = () => {
+    const data = localStorage.getItem('notes') || ''
+    const blob = new Blob([data], { type: 'application/json' })
+
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+  
+    link.href = url
+    link.setAttribute('download', 'notes.json')
+
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+  }
+
   return (
     <>
       {dialog.isOpen && (
@@ -73,7 +88,7 @@ export function Content() {
           buttonText="Clear"
           onClick={clearLocalDataHandler}
         />
-        <SettingPair text="Export data" buttonText="Export" onClick={() => {}} />
+        <SettingPair text="Export data" buttonText="Export" onClick={exportLocalData} />
         <SettingPair text="Import data" buttonText="Import" onClick={() => {}} />
         <SettingPair text="Download markdown file" buttonText="Download" onClick={() => {}} />
       </main>
