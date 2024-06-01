@@ -74,7 +74,26 @@ export function Content({ setItems }: ContentProps) {
     link.remove()
   }
 
-  const importLocalData = () => {}
+  const importLocalData = (event) => {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      const data = reader.result as string
+
+      try {
+        const parsedData = JSON.parse(data)
+        localStorage.setItem('notes', JSON.stringify(parsedData))
+
+        setItems(parsedData)
+        showToast('Data imported', 'Data has been imported.', 'success')
+      } catch (error) {
+        showToast('Error importing data', 'An error occurred while importing data.', 'error')
+      }
+    }
+
+    reader.readAsText(file)
+  }
 
   return (
     <>

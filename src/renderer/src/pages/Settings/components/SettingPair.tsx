@@ -3,7 +3,7 @@ import { useId } from 'react'
 type SettingPairProps = {
   text: string
   buttonText: string
-  onClick: () => void
+  onClick: (event?) => void 
   isFile?: boolean
 }
 
