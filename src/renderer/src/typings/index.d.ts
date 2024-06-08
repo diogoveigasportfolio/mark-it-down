@@ -27,18 +27,9 @@ export type ExplorerInputType = {
   folder: { isOpen: boolean; value: string }
 }
 
-export type ToastState = {
-  isOpen: boolean
-  title: string
-  message: string
-  type: 'success' | 'warning' | 'error'
-}
-
 export type SelectedItemType = {
   item: ExplorerItemType | undefined
   isFolder: boolean
   parentName?: string
   parentId?: string
 }
-
-export type ToastType = 'success' | 'warning' | 'error'

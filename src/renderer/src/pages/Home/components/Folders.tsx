@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
+import { toast } from 'sonner'
 
 import {
   ExplorerInputType,
   ExplorerItemType,
   FileType,
   FolderType,
-  SelectedItemType,
-  ToastState
+  SelectedItemType
 } from '@renderer/typings'
 import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
@@ -18,7 +18,6 @@ import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
-import Toast from '@renderer/components/Popups/Toast'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -44,12 +43,6 @@ export function Folders({
     folder: { isOpen: false, value: '' }
   })
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    title: '',
-    message: '',
-    type: 'error'
-  })
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
@@ -60,7 +53,9 @@ export function Folders({
   const folderIsSelected = selectedItem.isFolder
   const fileIsSelected = !selectedItem.isFolder && selectedItem.item
 
-  const favoriteOptionText = !(selectedItem?.item as FileType)?.isFavorite ? 'Mark as favorite ⭐' : 'Unmark as favorite ❌'
+  const favoriteOptionText = !(selectedItem?.item as FileType)?.isFavorite
+    ? 'Mark as favorite ⭐'
+    : 'Unmark as favorite ❌'
 
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
@@ -95,7 +90,7 @@ export function Folders({
     try {
       name = formatFolderName(creationInput.folder.value)
     } catch (error) {
-      showErrorToast("Couldn't create folder", (error as Error).message)
+      toast.error("Couldn't create folder", { description: (error as Error).message })
       return
     }
 
@@ -158,7 +153,7 @@ export function Folders({
     try {
       name = formatFileName(creationInput.file.value)
     } catch (error) {
-      showErrorToast("Couldn't create file", (error as Error).message)
+      toast.error("Couldn't create file", { description: (error as Error).message })
       return
     }
 
@@ -198,7 +193,7 @@ export function Folders({
     try {
       name = formatFolderName(renameInput.folder.value)
     } catch (error) {
-      showErrorToast("Couldn't create folder", (error as Error).message)
+      toast.error("Couldn't rename folder", { description: (error as Error).message })
       return
     }
 
@@ -227,7 +222,7 @@ export function Folders({
     try {
       name = formatFileName(renameInput.file.value)
     } catch (error) {
-      showErrorToast("Couldn't rename file", (error as Error).message)
+      toast.error("Couldn't rename file", { description: (error as Error).message })
       return
     }
 
@@ -262,19 +257,6 @@ export function Folders({
     })
 
     setDeleteModalIsOpen(false)
-  }
-
-  function closeToast() {
-    setToast((prev) => ({ ...prev, isOpen: false }))
-  }
-
-  function showErrorToast(title: string, message: string) {
-    setToast({
-      isOpen: true,
-      title,
-      message,
-      type: 'error'
-    })
   }
 
   function handleItemRename() {
@@ -324,7 +306,7 @@ export function Folders({
     })
   }
 
-  function handleFavoriteFile(){
+  function handleFavoriteFile() {
     if (!selectedItem.item) return
 
     setItems((prevItems) => {
@@ -348,12 +330,6 @@ export function Folders({
 
   return (
     <>
-      {toast.isOpen && (
-        <Toast title={toast.title} type={toast.type} onClose={closeToast}>
-          {toast.message}
-        </Toast>
-      )}
-
       <section className="h-full relative overflow-hidden">
         <div className="h-full overflow-auto" onAuxClick={handleBackgroundRightClick}>
           <div>

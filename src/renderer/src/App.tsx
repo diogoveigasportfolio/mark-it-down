@@ -1,4 +1,6 @@
+import { Toaster } from 'sonner'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import Home from './pages/Home'
 import Settings from './pages/Settings'
 import ErrorPage from './error-page'
@@ -16,7 +18,12 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster richColors position="bottom-right" />
+    </>
+  )
 }
 
 export default App

@@ -1,6 +1,4 @@
-import { useState } from 'react'
-
-import Toast from '../Popups/Toast'
+import { toast } from 'sonner'
 
 interface MarkdownLinkProps {
   children: React.ReactNode
@@ -8,18 +6,12 @@ interface MarkdownLinkProps {
 }
 
 const MarkdownLink = ({ children, href }: MarkdownLinkProps) => {
-  const [toastIsOpen, setToastIsOpen] = useState(false)
+  // const [toastIsOpen, setToastIsOpen] = useState(false)
 
   function handleCopy() {
     navigator.clipboard.writeText(href)
-    setToastIsOpen(true)
+    toast.success('Link copied to your clipboard.')
   }
-
-  function closeDialog() {
-    setToastIsOpen(false)
-  }
-
-  const toastMessage = `Link copied to your clipboard.`
 
   return (
     <>
@@ -29,11 +21,6 @@ const MarkdownLink = ({ children, href }: MarkdownLinkProps) => {
       >
         {children}
       </button>
-      {toastIsOpen && (
-        <Toast title="Link Copied" type="success" onClose={closeDialog}>
-          {toastMessage}
-        </Toast>
-      )}
     </>
   )
 }
