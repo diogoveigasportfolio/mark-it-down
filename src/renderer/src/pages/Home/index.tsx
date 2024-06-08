@@ -4,8 +4,8 @@ import { useMemo, useState } from 'react'
 
 import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
-import { explorerData } from '@renderer/data/explorerData'
-import { ExplorerInputType, ExplorerItemType, FileType, SelectedItemType } from '@renderer/typings'
+import { findSelectedExplorerItem } from '@renderer/utils/explorerItem'
+import { ExplorerInputType, ExplorerItemType, FileType } from '@renderer/typings'
 
 import { SideBarHeader, Folders, Settings, MarkdownEditor, FilePath } from './components'
 import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
@@ -25,30 +25,6 @@ function Home() {
   const selectedItem = useMemo(() => findSelectedExplorerItem(items), [items])
 
   const anySelected = selectedItem.item !== undefined
-
-  function findSelectedExplorerItem(items: ExplorerItemType[]): SelectedItemType {
-    const foundItem: ExplorerItemType | undefined = items.find(
-      (item: ExplorerItemType) => item.isSelected
-    )
-
-    if (foundItem) {
-      return { item: foundItem, isFolder: 'children' in foundItem, parentName: undefined }
-    }
-
-    const response: SelectedItemType = { item: undefined, isFolder: false }
-    items.forEach((item) => {
-      if ('children' in item) {
-        const result = findSelectedExplorerItem(item.children)
-        if (result.item) {
-          response.item = result.item
-          response.parentName = item.name
-          response.parentId = item.id
-        }
-      }
-    })
-
-    return response
-  }
 
   function getFavoriteItems(items: ExplorerItemType[]): FileType[] {
     const favorites: FileType[] = []

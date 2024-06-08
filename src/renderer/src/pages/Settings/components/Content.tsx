@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
 import { ColorSchemeSelector, SettingPair } from './'
-import { ExplorerItemType, ToastType as ToastTypeType } from '@renderer/typings'
+import { ExplorerItemType, ToastType as ToastTypeType, FileType } from '@renderer/typings'
 import Dialog from '@renderer/components/Popups/Dialog'
 import Toast from '@renderer/components/Popups/Toast'
+import { findSelectedExplorerItem, isExplorerItemType } from '@renderer/utils/explorerItem'
 
 type DialogType = { isOpen: boolean; title: string; message: string; onClick: () => void }
 type ToastType = { isOpen: boolean; title: string; message: string; type: ToastTypeType }
@@ -13,7 +14,7 @@ type ContentProps = {
   setItems: React.Dispatch<React.SetStateAction<ExplorerItemType[]>>
 }
 
-export function Content({ setItems }: ContentProps) {
+export function Content({ items, setItems }: ContentProps) {
   const [dialog, setDialog] = useState<DialogType>({
     isOpen: false,
     title: '',
@@ -107,6 +108,23 @@ export function Content({ setItems }: ContentProps) {
     reader.readAsText(file)
   }
 
+  const exportMarkdown = () => {
+    const selectedNote = findSelectedExplorerItem(items)
+    const { content, name } = selectedNote.item as FileType
+
+    const blob = new Blob([content], { type: 'text/markdown' })
+
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+
+    link.href = url
+    link.setAttribute('download', name)
+
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+  }
+
   return (
     <>
       {dialog.isOpen && (
@@ -133,47 +151,8 @@ export function Content({ setItems }: ContentProps) {
           isFile={true}
           onClick={importLocalData}
         />
-        <SettingPair text="Download markdown file" buttonText="Download" onClick={() => {}} />
+        <SettingPair text="Download markdown file" buttonText="Download" onClick={exportMarkdown} />
       </main>
     </>
   )
-}
-
-/**
- * * Both empty array or array with valid items is ok
- * @param obj - data from file
- * @returns boolean value, if the object is of type ExplorerItemType
- */
-function isExplorerItemType(obj: unknown): obj is ExplorerItemType[] {
-  const isArray = Array.isArray(obj)
-  const isEmptyArray = isArray && obj.length === 0
-
-  const isBaseExplorerItemType = (obj) =>
-    typeof obj === 'object' &&
-    'id' in obj &&
-    typeof obj.id === 'string' &&
-    'name' in obj &&
-    typeof obj.name === 'string' &&
-    'isSelected' in obj &&
-    typeof obj.isSelected === 'boolean'
-
-  const isFileType = (obj) =>
-    isBaseExplorerItemType(obj) &&
-    'content' in obj &&
-    typeof obj.content === 'string' &&
-    'isFavorite' in obj &&
-    typeof obj.isFavorite === 'boolean' &&
-    ('isOpen' in obj ? obj.isOpen === false : true)
-
-  const isFolderType = (obj) =>
-    isBaseExplorerItemType(obj) &&
-    'isOpen' in obj &&
-    typeof obj.isOpen === 'boolean' &&
-    'children' in obj &&
-    Array.isArray(obj.children) &&
-    obj.children.every(isFileType)
-
-  const allItemsAreValid = isArray && obj.every((item) => isFileType(item) || isFolderType(item))
-
-  return allItemsAreValid || isEmptyArray
 }
