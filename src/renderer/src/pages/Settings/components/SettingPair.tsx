@@ -3,7 +3,7 @@ import { useId } from 'react'
 type SettingPairProps = {
   text: string
   buttonText: string
-  onClick: (event?) => void 
+  onClick: (event?) => void
   isFile?: boolean
 }
 
@@ -28,7 +28,7 @@ export function SettingPair({ text, buttonText, onClick, isFile }: SettingPairPr
       >
         <span>{buttonText}</span>
       </label>
-      <input id={fileId} type="file" onChange={onClick} className="hidden" />
+      <input id={fileId} type="file" onChange={onClick} className="hidden" accept=".json" />
     </>
   )
 
