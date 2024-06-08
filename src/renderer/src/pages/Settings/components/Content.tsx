@@ -90,6 +90,8 @@ export function Content({ items, setItems }: ContentProps) {
         toast.error('Error importing data', {
           description: 'An error occurred while importing data.'
         })
+      } finally {
+        event.target.value = null
       }
     }
 
