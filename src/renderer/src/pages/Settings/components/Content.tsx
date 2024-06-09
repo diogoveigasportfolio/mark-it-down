@@ -100,6 +100,14 @@ export function Content({ items, setItems }: ContentProps) {
 
   const exportMarkdown = () => {
     const selectedNote = findSelectedExplorerItem(items)
+    if (selectedNote.item === undefined || selectedNote.isFolder) {
+      toast.error('Error exporting markdown', {
+        description: 'Please select a note to export.'
+      })
+
+      return
+    }
+
     const { content, name } = selectedNote.item as FileType
 
     const blob = new Blob([content], { type: 'text/markdown' })
