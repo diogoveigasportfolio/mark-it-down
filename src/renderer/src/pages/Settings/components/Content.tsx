@@ -13,8 +13,6 @@ type ContentProps = {
 export function Content({ items, setItems }: ContentProps) {
   const clearLocalData = () => {
     const clonedItems = getClonedUndoArray(items)
-    console.log('🚀 ~ clearLocalData ~ items:', items)
-    console.log('🚀 ~ clearLocalData ~ clonedItems:', clonedItems)
     setItems([])
 
     toast('You cleared the local storage', {
