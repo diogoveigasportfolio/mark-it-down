@@ -13,7 +13,7 @@ import ExplorerItem from '@renderer/components/ExplorerItem'
 import usePointerPos from '@renderer/hooks/usePointerPos'
 // import useKeydown from '../hooks/useKeydown'
 import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
-import { orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
+import { getClonedUndoArray, orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
 
 import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
@@ -206,12 +206,18 @@ export function Folders({
     setRenameInput((prev) => ({ ...prev, folder: { isOpen: false, value: '' } }))
   }
 
-  function handleDeleteFolder(id: string) {
+  function handleDeleteFolder(id: string): () => void {
+    const clonedItems = getClonedUndoArray(items)
+
     setItems((prevItems) => {
       return prevItems.filter((item) => item.id !== id)
     })
 
     setDeleteModalIsOpen(false)
+
+    return () => {
+      setItems(clonedItems)
+    }
   }
 
   function handleFileRename(e: React.FormEvent<HTMLFormElement>, id: string) {
@@ -244,7 +250,9 @@ export function Folders({
     setRenameInput((prev) => ({ ...prev, file: { isOpen: false, value: '' } }))
   }
 
-  function handleDeleteFile(id: string) {
+  function handleDeleteFile(id: string): () => void {
+    const clonedItems = getClonedUndoArray(items)
+
     setItems((prevItems) => {
       return prevItems.map((folder) => {
         if ('children' in folder) {
@@ -257,6 +265,10 @@ export function Folders({
     })
 
     setDeleteModalIsOpen(false)
+
+    return () => {
+      setItems(clonedItems)
+    }
   }
 
   function handleItemRename() {

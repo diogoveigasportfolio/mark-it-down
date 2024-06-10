@@ -1,12 +1,9 @@
-import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { ColorSchemeSelector, SettingPair } from './'
 import { ExplorerItemType, FileType } from '@renderer/typings'
-import Dialog from '@renderer/components/Popups/Dialog'
 import { findSelectedExplorerItem, isExplorerItemType } from '@renderer/utils/explorerItem'
-
-type DialogType = { isOpen: boolean; title: string; message: string; onClick: () => void }
+import { getClonedUndoArray } from '@renderer/utils/array'
 
 type ContentProps = {
   items: ExplorerItemType[]
@@ -14,34 +11,20 @@ type ContentProps = {
 }
 
 export function Content({ items, setItems }: ContentProps) {
-  const [dialog, setDialog] = useState<DialogType>({
-    isOpen: false,
-    title: '',
-    message: '',
-    onClick: () => {}
-  })
-
-  const showDialog = (title: string, message: string, onClick: () => void) => {
-    setDialog({ isOpen: true, title, message, onClick })
-  }
-
-  const closeDialog = () => {
-    setDialog({ ...dialog, isOpen: false })
-  }
-
   const clearLocalData = () => {
-    localStorage.removeItem('notes')
+    const clonedItems = getClonedUndoArray(items)
+    console.log('🚀 ~ clearLocalData ~ items:', items)
+    console.log('🚀 ~ clearLocalData ~ clonedItems:', clonedItems)
+    setItems([])
 
-    closeDialog()
-    toast.success('Local data cleared', { description: 'Local data has been cleared.' })
-  }
-
-  const clearLocalDataHandler = () => {
-    showDialog(
-      'Clear all local data',
-      'Are you sure you want to clear all local data?',
-      clearLocalData
-    )
+    toast('You cleared the local storage', {
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          setItems(clonedItems)
+        }
+      }
+    })
   }
 
   const exportLocalData = () => {
@@ -125,18 +108,9 @@ export function Content({ items, setItems }: ContentProps) {
 
   return (
     <>
-      {dialog.isOpen && (
-        <Dialog title={dialog.title} onCancel={closeDialog} onConfirm={dialog.onClick}>
-          {dialog.message}
-        </Dialog>
-      )}
       <main className="h-full w-full bg-neutral-100 dark:bg-neutral-850 flex flex-col overflow-hidden space-y-12 px-16 py-8">
         <ColorSchemeSelector />
-        <SettingPair
-          text="Clear all local data"
-          buttonText="Clear"
-          onClick={clearLocalDataHandler}
-        />
+        <SettingPair text="Clear all local data" buttonText="Clear" onClick={clearLocalData} />
         <SettingPair text="Export data" buttonText="Export" onClick={exportLocalData} />
         <SettingPair
           text="Import data"

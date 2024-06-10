@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react'
+
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 
 import ExplorerInputForm from '../Form/ExplorerInputForm'
-import Dialog from '@renderer/components/Popups/Dialog'
 import SelectableItem from './SelectableItem'
+import { toast } from 'sonner'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -14,11 +16,11 @@ type ExplorerItemProps = {
   renameInput: ExplorerInputType
   setRenameInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
   handleFolderRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
-  handleDeleteFolder: (id: string) => void
+  handleDeleteFolder: (id: string) => () => void
   deleteModalIsOpen: boolean
   setDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   handleFileRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
-  handleDeleteFile: (id: string) => void
+  handleDeleteFile: (id: string) => () => void
 }
 
 function ExplorerItem({
@@ -37,6 +39,7 @@ function ExplorerItem({
   handleFileRename,
   handleDeleteFile
 }: ExplorerItemProps) {
+  const [toasted, setToasted] = useState(false)
   const isFolder = 'children' in item
 
   const isRenaming = renameInput.file.isOpen || renameInput.folder.isOpen
@@ -45,12 +48,28 @@ function ExplorerItem({
 
   const currentIsDeleting = deleteModalIsOpen && item.isSelected
 
+  useEffect(() => {
+    if (currentIsDeleting && !toasted) {
+      setToasted(true)
+      if (isFolder) deleteFolder()
+      else deleteFile()
+
+      setTimeout(() => setToasted(false), 3000)
+    }
+  }, [currentIsDeleting, toasted, item.id])
+
   function renameFolder(e: React.FormEvent<HTMLFormElement>) {
     handleFolderRename(e, item.id)
   }
 
   function deleteFolder() {
-    handleDeleteFolder(item.id)
+    const undoFunction = handleDeleteFolder(item.id)
+    toast('You deleted a folder', {
+      action: {
+        label: 'Undo',
+        onClick: () => undoFunction()
+      }
+    })
   }
 
   function renameFile(e: React.FormEvent<HTMLFormElement>) {
@@ -58,29 +77,24 @@ function ExplorerItem({
   }
 
   function deleteFile() {
-    handleDeleteFile(item.id)
+    const undoFunction = handleDeleteFile(item.id)
+    toast('You deleted a file', {
+      action: {
+        label: 'Undo',
+        onClick: () => undoFunction()
+      }
+    })
   }
 
   return (
     <>
-      {/* Dialog */}
-      {currentIsDeleting && (
-        <Dialog
-          onConfirm={isFolder ? deleteFolder : deleteFile}
-          onCancel={() => setDeleteModalIsOpen(false)}
-          title={`Delete ${item.name}`}
-        >
-          <p>
-            Are you sure you want do delete the {isFolder ? 'folder' : 'file'}{' '}
-            <span className="font-bold">{item.name}</span> ?
-          </p>
-          <p>That action will be permanent!</p>
-        </Dialog>
-      )}
-
       {/* Explorer item */}
       {!currentIsRenaming && (
-        <SelectableItem item={item} handleToggleSelect={handleToggleSelect} handleToggleFolder={handleToggleFolder} />
+        <SelectableItem
+          item={item}
+          handleToggleSelect={handleToggleSelect}
+          handleToggleFolder={handleToggleFolder}
+        />
       )}
 
       {/* Rename file input */}
