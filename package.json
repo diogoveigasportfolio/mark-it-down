@@ -6,6 +6,11 @@
   "author": "Diogo Veigas",
   "homepage": "https://electron-vite.org",
   "license": "MIT",
+  "build": {
+    "directories": {
+      "buildResources": "resources"
+    }
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
