@@ -1,7 +1,7 @@
 {
   "name": "mark-it-down",
   "version": "1.0.0",
-  "description": "Mark it (your notes) down",
+  "description": "Mark it (your notes) down with markdown syntax.",
   "main": "./out/main/index.js",
   "author": "Diogo Veigas",
   "homepage": "https://electron-vite.org",
