@@ -25,6 +25,8 @@ async function createWindow(): Promise<void> {
     }
   })
 
+  mainWindow.setIcon(icon)
+
   mainWindowStateKeeper.track(mainWindow)
 
   initializeTheme()
