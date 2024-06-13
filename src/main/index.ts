@@ -1,9 +1,9 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, ipcMain, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-import { windowStateKeeper, setTheme, getTheme, initializeTheme } from './utils'
+import { getTheme, initializeTheme, setTheme, windowStateKeeper } from './utils'
 
 async function createWindow(): Promise<void> {
   const mainWindowStateKeeper = await windowStateKeeper('main')
