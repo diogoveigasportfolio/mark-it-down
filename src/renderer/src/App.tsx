@@ -1,13 +1,15 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import Toaster from './components/Toaster'
+import Error from './pages/Error'
 import Home from './pages/Home'
 import Settings from './pages/Settings'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
-    element: <Home />
+    element: <Home />,
+    errorElement: <Error />
   },
   {
     path: '/settings',

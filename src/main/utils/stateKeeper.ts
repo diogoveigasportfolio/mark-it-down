@@ -30,7 +30,7 @@ export const windowStateKeeper = async (windowName) => {
     try {
       debounceTimeout = setTimeout(async () => {
         if (!windowState.isMaximized) {
-          windowState = window.getBounds()
+          windowState = await window.getBounds()
         }
         windowState.isMaximized = window.isMaximized()
 
