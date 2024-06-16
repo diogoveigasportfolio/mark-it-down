@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 
+import { toast } from 'sonner'
 import ExplorerInputForm from '../Form/ExplorerInputForm'
 import SelectableItem from './SelectableItem'
-import { toast } from 'sonner'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -94,6 +94,7 @@ function ExplorerItem({
           item={item}
           handleToggleSelect={handleToggleSelect}
           handleToggleFolder={handleToggleFolder}
+          setRenameInput={setRenameInput}
         />
       )}
 

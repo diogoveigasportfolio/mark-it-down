@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import ExplorerItem from '@renderer/components/ExplorerItem'
+import usePointerPos from '@renderer/hooks/usePointerPos'
 import {
   ExplorerInputType,
   ExplorerItemType,
@@ -9,15 +11,13 @@ import {
   FolderType,
   SelectedItemType
 } from '@renderer/typings'
-import ExplorerItem from '@renderer/components/ExplorerItem'
-import usePointerPos from '@renderer/hooks/usePointerPos'
 // import useKeydown from '../hooks/useKeydown'
-import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
 import { getClonedUndoArray, orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
+import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
 
-import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
-import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
+import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
+import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
 
 type FoldersProps = {
   items: ExplorerItemType[]
