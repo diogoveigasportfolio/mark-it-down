@@ -42,12 +42,12 @@ export function Folders({
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
   // useKeydown('F2', handleItemRename)
-  // useKeydown('Delete', () => setDeleteModalIsOpen(true))
+  // useKeydown('Delete', () => setIsDeleting(true))
 
   const anyIsSelected = selectedItem.item !== undefined
   const folderIsSelected = selectedItem.isFolder
@@ -213,7 +213,7 @@ export function Folders({
       return prevItems.filter((item) => item.id !== id)
     })
 
-    setDeleteModalIsOpen(false)
+    setIsDeleting(false)
 
     return () => {
       setItems(clonedItems)
@@ -264,7 +264,7 @@ export function Folders({
       }) as ExplorerItemType[]
     })
 
-    setDeleteModalIsOpen(false)
+    setIsDeleting(false)
 
     return () => {
       setItems(clonedItems)
@@ -364,8 +364,8 @@ export function Folders({
                 renameInput={renameInput}
                 setRenameInput={setRenameInput}
                 handleFolderRename={handleFolderRename}
-                deleteModalIsOpen={deleteModalIsOpen}
-                setDeleteModalIsOpen={setDeleteModalIsOpen}
+                isDeleting={isDeleting}
+                setIsDeleting={setIsDeleting}
                 handleDeleteFolder={handleDeleteFolder}
                 handleFileRename={handleFileRename}
                 handleDeleteFile={handleDeleteFile}
@@ -411,7 +411,7 @@ export function Folders({
                 }))
               }
             />
-            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
+            <MenuOption text="Delete" clickHandler={() => setIsDeleting(true)} />
           </>
         )}
         {fileIsSelected && (
@@ -425,7 +425,7 @@ export function Folders({
                 }))
               }
             />
-            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
+            <MenuOption text="Delete" clickHandler={() => setIsDeleting(true)} />
             <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
             <MenuOption text={favoriteOptionText} clickHandler={handleFavoriteFile} />
           </>
