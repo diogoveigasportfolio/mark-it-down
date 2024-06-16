@@ -1,13 +1,19 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, ipcMain, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-function createWindow(): void {
+import { getTheme, initializeTheme, setTheme, windowStateKeeper } from './utils'
+
+async function createWindow(): Promise<void> {
+  const mainWindowStateKeeper = await windowStateKeeper('main')
+
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
-    center: true,
+    x: mainWindowStateKeeper.x,
+    y: mainWindowStateKeeper.y,
+    width: mainWindowStateKeeper.width,
+    height: mainWindowStateKeeper.height,
+    fullscreen: mainWindowStateKeeper.isMaximized,
     show: false,
     title: 'Mark it down!',
     autoHideMenuBar: true,
@@ -17,6 +23,28 @@ function createWindow(): void {
       sandbox: true,
       contextIsolation: true
     }
+  })
+
+  mainWindow.setIcon(icon)
+
+  mainWindowStateKeeper.track(mainWindow)
+
+  initializeTheme()
+
+  ipcMain.handle('theme:get', async () => {
+    return await getTheme()
+  })
+
+  ipcMain.handle('theme:dark', () => {
+    setTheme('dark')
+  })
+
+  ipcMain.handle('theme:light', () => {
+    setTheme('light')
+  })
+
+  ipcMain.handle('theme:system', () => {
+    setTheme('system')
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -35,6 +63,20 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  // Zoom on scroll
+  mainWindow.webContents.setZoomFactor(1.0)
+  mainWindow.webContents.setVisualZoomLevelLimits(1, 5)
+  mainWindow.webContents.on('zoom-changed', (_event, zoomDirection) => {
+    const currentZoom = mainWindow.webContents.getZoomFactor()
+
+    if (zoomDirection === 'in') {
+      mainWindow.webContents.zoomFactor = currentZoom + 0.2
+    }
+    if (zoomDirection === 'out' && currentZoom > 0.5) {
+      mainWindow.webContents.zoomFactor = currentZoom - 0.2
+    }
+  })
 }
 
 // This method will be called when Electron has finished

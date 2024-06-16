@@ -1,0 +1,1 @@
+export const FAVORITE_FOLDER = 'FAVORITE_FOLDER'

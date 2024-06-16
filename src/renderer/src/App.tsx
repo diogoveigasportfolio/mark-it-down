@@ -1,8 +1,28 @@
+import { createHashRouter, RouterProvider } from 'react-router-dom'
+
+import Toaster from './components/Toaster'
+import Error from './pages/Error'
+import Home from './pages/Home'
+import Settings from './pages/Settings'
+
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <Home />,
+    errorElement: <Error />
+  },
+  {
+    path: '/settings',
+    element: <Settings />
+  }
+])
+
 function App() {
   return (
-    <div className="h-full flex justify-center items-center bg-neutral-800">
-      <h1 className="text-blue-500 font-bold text-7xl">Mark it down!</h1>
-    </div>
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
   )
 }
 

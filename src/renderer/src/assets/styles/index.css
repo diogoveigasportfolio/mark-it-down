@@ -13,10 +13,10 @@
 
     @apply select-none;
 
-    @apply bg-transparent;
+    @apply antialiased;
 
-    @apply font-mono antialiased text-white;
+    font-family: 'roboto';
 
-    @apply overflow-hidden;
+    /* @apply overflow-hidden; */
   }
 }

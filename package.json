@@ -1,11 +1,16 @@
 {
   "name": "mark-it-down",
   "version": "1.0.0",
-  "description": "Mark your notes (it) down",
+  "description": "Mark it (your notes) down with markdown syntax.",
   "main": "./out/main/index.js",
   "author": "Diogo Veigas",
   "homepage": "https://electron-vite.org",
   "license": "MIT",
+  "build": {
+    "directories": {
+      "buildResources": "resources"
+    }
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -23,14 +28,21 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
-    "@mdxeditor/editor": "^1.14.3",
-    "fs-extra": "^11.2.0"
+    "electron-settings": "^4.0.4",
+    "fs-extra": "^11.2.0",
+    "nanoid": "^5.0.6",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.22.3",
+    "react-split": "^2.0.14",
+    "remark-gfm": "^4.0.0",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",
     "@electron-toolkit/eslint-config-ts": "^1.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.12",
     "@types/lodash": "^4.14.202",
     "@types/node": "^18.17.5",
     "@types/react": "^18.2.20",
