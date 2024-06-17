@@ -340,6 +340,26 @@ export function Folders({
     })
   }
 
+  function favoriteFile(id: string) {
+    setItems((prevItems) => {
+      return prevItems.map((folder) => {
+        if ('children' in folder) {
+          const children = folder.children.map((file) => {
+            if (file.id === id) {
+              return { ...file, isFavorite: !file.isFavorite }
+            }
+            return file
+          })
+          return {
+            ...folder,
+            children: children
+          }
+        }
+        return folder
+      })
+    })
+  }
+
   return (
     <>
       <section className="h-full relative overflow-hidden">
@@ -369,6 +389,7 @@ export function Folders({
                 handleDeleteFolder={handleDeleteFolder}
                 handleFileRename={handleFileRename}
                 handleDeleteFile={handleDeleteFile}
+                favoriteFile={favoriteFile}
               />
             ))}
             <div

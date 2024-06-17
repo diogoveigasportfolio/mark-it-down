@@ -21,6 +21,7 @@ type ExplorerItemProps = {
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>
   handleFileRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
   handleDeleteFile: (id: string) => () => void
+  favoriteFile: (id: string) => void
 }
 
 function ExplorerItem({
@@ -37,7 +38,8 @@ function ExplorerItem({
   isDeleting,
   setIsDeleting,
   handleFileRename,
-  handleDeleteFile
+  handleDeleteFile,
+  favoriteFile
 }: ExplorerItemProps) {
   const [toasted, setToasted] = useState(false)
   const isFolder = 'children' in item
@@ -95,6 +97,7 @@ function ExplorerItem({
           handleToggleSelect={handleToggleSelect}
           handleToggleFolder={handleToggleFolder}
           setRenameInput={setRenameInput}
+          favoriteFile={favoriteFile}
         />
       )}
 
@@ -136,6 +139,7 @@ function ExplorerItem({
               setIsDeleting={setIsDeleting}
               handleFileRename={handleFileRename}
               handleDeleteFile={handleDeleteFile}
+              favoriteFile={favoriteFile}
             />
           ))}
         </section>
