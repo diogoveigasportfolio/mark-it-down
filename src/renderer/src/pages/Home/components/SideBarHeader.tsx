@@ -75,17 +75,17 @@ export function SideBarHeader({
         My Files
       </h1>
       <div className="flex items-center gap-2 text-neutral-750 dark:text-neutral-250">
-        <ToolTip text="New file...">
+        <ToolTip text="New file..." onClick={openFileInput}>
           <IconButton onClick={openFileInput}>
             <HiOutlineDocumentPlus className="size-6 stroke-2" />
           </IconButton>
         </ToolTip>
-        <ToolTip text="New folder...">
+        <ToolTip text="New folder..." onClick={openFolderInput}>
           <IconButton onClick={openFolderInput}>
             <HiOutlineFolderPlus className="size-6 stroke-2" />
           </IconButton>
         </ToolTip>
-        <ToolTip text={collapseToolTip}>
+        <ToolTip text={collapseToolTip} onClick={handleCollapse}>
           <IconButton onClick={handleCollapse}>{collapseIcon}</IconButton>
         </ToolTip>
         <ToolTip text="Unavailable..." position="right">
