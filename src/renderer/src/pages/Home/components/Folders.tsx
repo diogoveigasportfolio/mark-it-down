@@ -13,11 +13,10 @@ import {
 } from '@renderer/typings'
 // import useKeydown from '../hooks/useKeydown'
 import { getClonedUndoArray, orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
-import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
+import { formatFileName, formatFolderName } from '@renderer/utils/naming'
 
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
-import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
-import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
+import { RightClickMenus } from './RightClickMenus'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -49,13 +48,7 @@ export function Folders({
   // useKeydown('F2', handleItemRename)
   // useKeydown('Delete', () => setIsDeleting(true))
 
-  const anyIsSelected = selectedItem.item !== undefined
   const folderIsSelected = selectedItem.isFolder
-  const fileIsSelected = !selectedItem.isFolder && selectedItem.item
-
-  const favoriteOptionText = !(selectedItem?.item as FileType)?.isFavorite
-    ? 'Mark as favorite ⭐'
-    : 'Unmark as favorite ❌'
 
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
@@ -102,7 +95,6 @@ export function Folders({
       children: []
     }
 
-    console.log(items)
     const updatedFolders = orderFoldersByName([...items, newFolder] as FolderType[])
     setItems(updatedFolders)
 
@@ -286,60 +278,6 @@ export function Folders({
     }))
   }
 
-  function handleFileDuplication() {
-    if (!selectedItem.item) return
-
-    const duplicatedFile = {
-      ...selectedItem.item,
-      id: nanoid(),
-      name: formatDuplicateFileName(selectedItem.item.name)
-    } as FileType
-
-    // console.log('duplicatedFile: ', duplicatedFile)
-    // console.log('original file: ', selectedItem.item)
-
-    setItems((prevItems) => {
-      return prevItems.map((folder) => {
-        if (folder.id === selectedItem.parentId && 'children' in folder) {
-          const children = folder.children.map((file) => {
-            if (file.id === selectedItem.item?.id) {
-              return { ...file, isSelected: false }
-            }
-            return file
-          })
-          return {
-            ...folder,
-            isOpen: true,
-            children: orderFilesByName([...children, duplicatedFile as FileType])
-          }
-        }
-        return folder
-      })
-    })
-  }
-
-  function handleFavoriteFile() {
-    if (!selectedItem.item) return
-
-    setItems((prevItems) => {
-      return prevItems.map((folder) => {
-        if (folder.id === selectedItem.parentId && 'children' in folder) {
-          const children = folder.children.map((file) => {
-            if (file.id === selectedItem.item?.id) {
-              return { ...file, isFavorite: !file.isFavorite }
-            }
-            return file
-          })
-          return {
-            ...folder,
-            children: children
-          }
-        }
-        return folder
-      })
-    })
-  }
-
   function favoriteFile(id: string) {
     setItems((prevItems) => {
       return prevItems.map((folder) => {
@@ -400,58 +338,16 @@ export function Folders({
           </div>
         </div>
       </section>
-      <MenuOptions ref={menuRef} menuOpen={menuOpen}>
-        {!anyIsSelected && (
-          <MenuOption
-            text="New folder.."
-            clickHandler={() =>
-              setCreationInput((prev) => ({
-                ...prev,
-                folder: { isOpen: true, value: '' }
-              }))
-            }
-          />
-        )}
-        {folderIsSelected && (
-          <>
-            <MenuOption
-              text="New file.."
-              clickHandler={() =>
-                setCreationInput((prev) => ({
-                  ...prev,
-                  file: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption
-              text="Rename.."
-              clickHandler={() =>
-                setRenameInput((prev) => ({
-                  ...prev,
-                  folder: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption text="Delete" clickHandler={() => setIsDeleting(true)} />
-          </>
-        )}
-        {fileIsSelected && (
-          <>
-            <MenuOption
-              text="Rename.."
-              clickHandler={() =>
-                setRenameInput((prev) => ({
-                  ...prev,
-                  file: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption text="Delete" clickHandler={() => setIsDeleting(true)} />
-            <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
-            <MenuOption text={favoriteOptionText} clickHandler={handleFavoriteFile} />
-          </>
-        )}
-      </MenuOptions>
+      <RightClickMenus
+        ref={menuRef}
+        menuOpen={menuOpen}
+        setItems={setItems}
+        selectedItem={selectedItem}
+        setCreationInput={setCreationInput}
+        setRenameInput={setRenameInput}
+        setIsDeleting={setIsDeleting}
+        folderIsSelected={folderIsSelected}
+      />
     </>
   )
 }

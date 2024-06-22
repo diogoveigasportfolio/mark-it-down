@@ -1,6 +1,6 @@
 type MenuOptionProps = {
   text: string
-  clickHandler: (e: React.MouseEvent<HTMLLIElement>) => void
+  clickHandler?: (e: React.MouseEvent<HTMLLIElement>) => void
 }
 
 export default function MenuOption({ text, clickHandler }: MenuOptionProps) {
