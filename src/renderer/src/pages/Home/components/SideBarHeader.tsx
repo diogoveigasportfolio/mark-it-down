@@ -9,6 +9,7 @@ import {
 import { ExplorerInputType, ExplorerItemType, SelectedItemType } from '@renderer/typings'
 
 import IconButton from '@/components/IconButton'
+import ToolTip from '@renderer/components/ToolTip'
 
 type SideBarHeaderProps = {
   setCreationInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
@@ -66,22 +67,32 @@ export function SideBarHeader({
     <HiMiniArrowsPointingIn className="size-6" />
   )
 
+  const collapseToolTip = allFoldersAreCollapsed ? 'Expand all' : 'Collapse all'
+
   return (
     <section className="flex items-center gap-4 justify-end mt-16 pl-6 pr-2">
       <h1 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mr-auto text-nowrap">
         My Files
       </h1>
       <div className="flex items-center gap-2 text-neutral-750 dark:text-neutral-250">
-        <IconButton onClick={openFileInput}>
-          <HiOutlineDocumentPlus className="size-6 stroke-2" />
-        </IconButton>
-        <IconButton onClick={openFolderInput}>
-          <HiOutlineFolderPlus className="size-6 stroke-2" />
-        </IconButton>
-        <IconButton onClick={handleCollapse}>{collapseIcon}</IconButton>
-        <IconButton>
-          <HiEllipsisHorizontal className="size-6 stroke-1" />
-        </IconButton>
+        <ToolTip text="New file...">
+          <IconButton onClick={openFileInput}>
+            <HiOutlineDocumentPlus className="size-6 stroke-2" />
+          </IconButton>
+        </ToolTip>
+        <ToolTip text="New folder...">
+          <IconButton onClick={openFolderInput}>
+            <HiOutlineFolderPlus className="size-6 stroke-2" />
+          </IconButton>
+        </ToolTip>
+        <ToolTip text={collapseToolTip}>
+          <IconButton onClick={handleCollapse}>{collapseIcon}</IconButton>
+        </ToolTip>
+        <ToolTip text="Unavailable..." position="right">
+          <IconButton>
+            <HiEllipsisHorizontal className="size-6 stroke-1" />
+          </IconButton>
+        </ToolTip>
       </div>
     </section>
   )
