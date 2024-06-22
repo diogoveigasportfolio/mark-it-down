@@ -341,6 +341,7 @@ export function Folders({
       <RightClickMenus
         ref={menuRef}
         menuOpen={menuOpen}
+        items={items}
         setItems={setItems}
         selectedItem={selectedItem}
         setCreationInput={setCreationInput}
