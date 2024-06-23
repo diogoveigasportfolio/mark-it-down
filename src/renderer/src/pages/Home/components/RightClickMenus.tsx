@@ -119,7 +119,6 @@ export const RightClickMenus = forwardRef(function RightClickMenus(
             return {
               ...folder,
               isSelected: false,
-              isOpen: false,
               children: folder.children.filter((file) => file.id !== selectedItem.item?.id)
             }
           }
