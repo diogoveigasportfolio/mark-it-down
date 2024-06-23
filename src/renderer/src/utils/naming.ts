@@ -9,15 +9,17 @@
  */
 
 function validCharacterLimits(name: string): string {
+  name = name.trim()
+
   if (name.length > 30) {
     throw new Error('Chosen name is too long')
   }
 
-  if (name.length === 3) {
+  if (name.length <= 1) {
     throw new Error('Chosen name is too small')
   }
 
-  return name.trim()
+  return name
 }
 
 export function nameIsValid(name: string): boolean {
@@ -25,9 +27,9 @@ export function nameIsValid(name: string): boolean {
 
   const folderNameRegExp = /^[^\\/:*?"<>|]+$/
 
-  const isValidFolderName = folderNameRegExp.test(trimmedName);
+  const isValidFolderName = folderNameRegExp.test(trimmedName)
 
-  return isValidFolderName;
+  return isValidFolderName
 }
 
 export function formatFolderName(name: string): string {
@@ -38,11 +40,11 @@ export function formatFolderName(name: string): string {
   } catch (error) {
     throw new Error((error as Error).message)
   }
-  
+
   if (!isValid) {
     throw new Error('Folder name is invalid')
   }
-  
+
   return name.trim()
 }
 
@@ -65,7 +67,7 @@ export function formatFileName(name: string): string {
   return name + pathEnd
 }
 
-export function formatDuplicateFileName(name: string): string{
+export function formatDuplicateFileName(name: string): string {
   const parts = name.split('.')
   if (parts.length === 1) {
     return `${name}-copy.md`

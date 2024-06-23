@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { ExplorerInputType, ExplorerItemType } from '@renderer/typings'
 
+import { toast } from 'sonner'
 import ExplorerInputForm from '../Form/ExplorerInputForm'
 import SelectableItem from './SelectableItem'
-import { toast } from 'sonner'
 
 type ExplorerItemProps = {
   item: ExplorerItemType
@@ -17,10 +17,11 @@ type ExplorerItemProps = {
   setRenameInput: React.Dispatch<React.SetStateAction<ExplorerInputType>>
   handleFolderRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
   handleDeleteFolder: (id: string) => () => void
-  deleteModalIsOpen: boolean
-  setDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isDeleting: boolean
+  setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>
   handleFileRename: (e: React.FormEvent<HTMLFormElement>, id: string) => void
   handleDeleteFile: (id: string) => () => void
+  favoriteFile: (id: string) => void
 }
 
 function ExplorerItem({
@@ -34,10 +35,11 @@ function ExplorerItem({
   setRenameInput,
   handleFolderRename,
   handleDeleteFolder,
-  deleteModalIsOpen,
-  setDeleteModalIsOpen,
+  isDeleting,
+  setIsDeleting,
   handleFileRename,
-  handleDeleteFile
+  handleDeleteFile,
+  favoriteFile
 }: ExplorerItemProps) {
   const [toasted, setToasted] = useState(false)
   const isFolder = 'children' in item
@@ -46,7 +48,7 @@ function ExplorerItem({
 
   const currentIsRenaming = isRenaming && item.isSelected
 
-  const currentIsDeleting = deleteModalIsOpen && item.isSelected
+  const currentIsDeleting = isDeleting && item.isSelected
 
   useEffect(() => {
     if (currentIsDeleting && !toasted) {
@@ -94,6 +96,8 @@ function ExplorerItem({
           item={item}
           handleToggleSelect={handleToggleSelect}
           handleToggleFolder={handleToggleFolder}
+          setRenameInput={setRenameInput}
+          favoriteFile={favoriteFile}
         />
       )}
 
@@ -131,10 +135,11 @@ function ExplorerItem({
               setRenameInput={setRenameInput}
               handleFolderRename={handleFolderRename}
               handleDeleteFolder={handleDeleteFolder}
-              deleteModalIsOpen={deleteModalIsOpen}
-              setDeleteModalIsOpen={setDeleteModalIsOpen}
+              isDeleting={isDeleting}
+              setIsDeleting={setIsDeleting}
               handleFileRename={handleFileRename}
               handleDeleteFile={handleDeleteFile}
+              favoriteFile={favoriteFile}
             />
           ))}
         </section>

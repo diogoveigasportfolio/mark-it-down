@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import ExplorerItem from '@renderer/components/ExplorerItem'
+import usePointerPos from '@renderer/hooks/usePointerPos'
 import {
   ExplorerInputType,
   ExplorerItemType,
@@ -9,15 +11,12 @@ import {
   FolderType,
   SelectedItemType
 } from '@renderer/typings'
-import ExplorerItem from '@renderer/components/ExplorerItem'
-import usePointerPos from '@renderer/hooks/usePointerPos'
 // import useKeydown from '../hooks/useKeydown'
-import { formatDuplicateFileName, formatFileName, formatFolderName } from '@renderer/utils/naming'
 import { getClonedUndoArray, orderFilesByName, orderFoldersByName } from '@renderer/utils/array'
+import { formatFileName, formatFolderName } from '@renderer/utils/naming'
 
-import MenuOptions from '@renderer/components/RightClickMenu/MenuOptions'
-import MenuOption from '@renderer/components/RightClickMenu/MenuOption'
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
+import { RightClickMenus } from './RightClickMenus'
 
 type FoldersProps = {
   items: ExplorerItemType[]
@@ -42,20 +41,14 @@ export function Folders({
     file: { isOpen: false, value: '' },
     folder: { isOpen: false, value: '' }
   })
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
   // useKeydown('F2', handleItemRename)
-  // useKeydown('Delete', () => setDeleteModalIsOpen(true))
+  // useKeydown('Delete', () => setIsDeleting(true))
 
-  const anyIsSelected = selectedItem.item !== undefined
   const folderIsSelected = selectedItem.isFolder
-  const fileIsSelected = !selectedItem.isFolder && selectedItem.item
-
-  const favoriteOptionText = !(selectedItem?.item as FileType)?.isFavorite
-    ? 'Mark as favorite ⭐'
-    : 'Unmark as favorite ❌'
 
   function handleBackgroundRightClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault()
@@ -102,7 +95,6 @@ export function Folders({
       children: []
     }
 
-    console.log(items)
     const updatedFolders = orderFoldersByName([...items, newFolder] as FolderType[])
     setItems(updatedFolders)
 
@@ -213,7 +205,7 @@ export function Folders({
       return prevItems.filter((item) => item.id !== id)
     })
 
-    setDeleteModalIsOpen(false)
+    setIsDeleting(false)
 
     return () => {
       setItems(clonedItems)
@@ -264,7 +256,7 @@ export function Folders({
       }) as ExplorerItemType[]
     })
 
-    setDeleteModalIsOpen(false)
+    setIsDeleting(false)
 
     return () => {
       setItems(clonedItems)
@@ -286,46 +278,12 @@ export function Folders({
     }))
   }
 
-  function handleFileDuplication() {
-    if (!selectedItem.item) return
-
-    const duplicatedFile = {
-      ...selectedItem.item,
-      id: nanoid(),
-      name: formatDuplicateFileName(selectedItem.item.name)
-    } as FileType
-
-    // console.log('duplicatedFile: ', duplicatedFile)
-    // console.log('original file: ', selectedItem.item)
-
+  function favoriteFile(id: string) {
     setItems((prevItems) => {
       return prevItems.map((folder) => {
-        if (folder.id === selectedItem.parentId && 'children' in folder) {
+        if ('children' in folder) {
           const children = folder.children.map((file) => {
-            if (file.id === selectedItem.item?.id) {
-              return { ...file, isSelected: false }
-            }
-            return file
-          })
-          return {
-            ...folder,
-            isOpen: true,
-            children: orderFilesByName([...children, duplicatedFile as FileType])
-          }
-        }
-        return folder
-      })
-    })
-  }
-
-  function handleFavoriteFile() {
-    if (!selectedItem.item) return
-
-    setItems((prevItems) => {
-      return prevItems.map((folder) => {
-        if (folder.id === selectedItem.parentId && 'children' in folder) {
-          const children = folder.children.map((file) => {
-            if (file.id === selectedItem.item?.id) {
+            if (file.id === id) {
               return { ...file, isFavorite: !file.isFavorite }
             }
             return file
@@ -364,11 +322,12 @@ export function Folders({
                 renameInput={renameInput}
                 setRenameInput={setRenameInput}
                 handleFolderRename={handleFolderRename}
-                deleteModalIsOpen={deleteModalIsOpen}
-                setDeleteModalIsOpen={setDeleteModalIsOpen}
+                isDeleting={isDeleting}
+                setIsDeleting={setIsDeleting}
                 handleDeleteFolder={handleDeleteFolder}
                 handleFileRename={handleFileRename}
                 handleDeleteFile={handleDeleteFile}
+                favoriteFile={favoriteFile}
               />
             ))}
             <div
@@ -379,58 +338,17 @@ export function Folders({
           </div>
         </div>
       </section>
-      <MenuOptions ref={menuRef} menuOpen={menuOpen}>
-        {!anyIsSelected && (
-          <MenuOption
-            text="New folder.."
-            clickHandler={() =>
-              setCreationInput((prev) => ({
-                ...prev,
-                folder: { isOpen: true, value: '' }
-              }))
-            }
-          />
-        )}
-        {folderIsSelected && (
-          <>
-            <MenuOption
-              text="New file.."
-              clickHandler={() =>
-                setCreationInput((prev) => ({
-                  ...prev,
-                  file: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption
-              text="Rename.."
-              clickHandler={() =>
-                setRenameInput((prev) => ({
-                  ...prev,
-                  folder: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
-          </>
-        )}
-        {fileIsSelected && (
-          <>
-            <MenuOption
-              text="Rename.."
-              clickHandler={() =>
-                setRenameInput((prev) => ({
-                  ...prev,
-                  file: { isOpen: true, value: '' }
-                }))
-              }
-            />
-            <MenuOption text="Delete" clickHandler={() => setDeleteModalIsOpen(true)} />
-            <MenuOption text="Duplicate file" clickHandler={handleFileDuplication} />
-            <MenuOption text={favoriteOptionText} clickHandler={handleFavoriteFile} />
-          </>
-        )}
-      </MenuOptions>
+      <RightClickMenus
+        ref={menuRef}
+        menuOpen={menuOpen}
+        items={items}
+        setItems={setItems}
+        selectedItem={selectedItem}
+        setCreationInput={setCreationInput}
+        setRenameInput={setRenameInput}
+        setIsDeleting={setIsDeleting}
+        folderIsSelected={folderIsSelected}
+      />
     </>
   )
 }

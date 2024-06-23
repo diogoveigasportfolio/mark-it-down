@@ -7,9 +7,22 @@
   "homepage": "https://electron-vite.org",
   "license": "MIT",
   "build": {
+    "files": [
+      "out/**/*",
+      "resources/**/*"
+    ],
     "directories": {
       "buildResources": "resources"
-    }
+    },
+    "extraResources": [
+      {
+        "from": "./resources",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   },
   "scripts": {
     "format": "prettier --write .",

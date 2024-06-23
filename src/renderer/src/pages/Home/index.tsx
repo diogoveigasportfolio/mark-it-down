@@ -1,16 +1,16 @@
 // https://react-icons.github.io/react-icons/icons/hi2/
-import { HiBars3 } from 'react-icons/hi2'
 import { useMemo, useState } from 'react'
+import { HiBars3 } from 'react-icons/hi2'
 
-import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import useLocalStorage from '@renderer/hooks/useLocalStorage'
-import { findSelectedExplorerItem } from '@renderer/utils/explorerItem'
+import useSideBarSizes from '@renderer/hooks/useSideBarSizes'
 import { ExplorerInputType, ExplorerItemType, FileType } from '@renderer/typings'
+import { findSelectedExplorerItem } from '@renderer/utils/explorerItem'
 
-import { SideBarHeader, Folders, Settings, MarkdownEditor, FilePath } from './components'
 import MarkdownModeSwitcher from '@renderer/components/Markdown/MarkdownModeSwitcher'
 import SplitManager from '@renderer/components/SplitManager'
 import { baseExplorerData } from '@renderer/data/baseExplorerData'
+import { FilePath, Folders, MarkdownEditor, Settings, SideBarHeader } from './components'
 
 function Home() {
   const { sideBarSizes, sideBarIsOpen, toggleSideBar, onDragEnd } = useSideBarSizes()
@@ -62,6 +62,7 @@ function Home() {
           <aside className="h-full bg-neutral-250 dark:bg-neutral-900 w-40 flex flex-col gap-4">
             <SideBarHeader
               setCreationInput={setCreationInput}
+              items={items}
               setItems={setItems}
               selectedItem={selectedItem}
             />
