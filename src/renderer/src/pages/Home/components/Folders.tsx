@@ -16,6 +16,7 @@ import { getClonedUndoArray, orderFilesByName, orderFoldersByName } from '@rende
 import { formatFileName, formatFolderName } from '@renderer/utils/naming'
 
 import ExplorerInputForm from '@renderer/components/Form/ExplorerInputForm'
+import useKeydown from '@renderer/hooks/useKeydown'
 import { RightClickMenus } from './RightClickMenus'
 
 type FoldersProps = {
@@ -45,7 +46,7 @@ export function Folders({
   const menuRef = useRef<HTMLDivElement>(null)
   const coords = usePointerPos()
 
-  // useKeydown('F2', handleItemRename)
+  useKeydown('F2', handleItemRename)
   // useKeydown('Delete', () => setIsDeleting(true))
 
   const folderIsSelected = selectedItem.isFolder
